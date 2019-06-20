@@ -1,6 +1,8 @@
-<h1>Editing Study</h1>
+<h2>Editing Study</h2>
 
 <%= render 'form', study: @study %>
 
-<%= link_to 'Show', @study %> |
-<%= link_to 'Back', studies_path %>
+<div style="margin-top: 10px;">
+  <%= link_to 'Show', @study, class: "btn btn-outline-secondary btn-sm" %>
+  <%= link_to 'Back', studies_path, class: "btn btn-outline-secondary btn-sm" %>
+</div>

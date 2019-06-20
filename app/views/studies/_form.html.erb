@@ -1,37 +1,10 @@
-<%= form_with(model: study, local: true) do |form| %>
-  <% if study.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(study.errors.count, "error") %> prohibited this study from being saved:</h2>
+<%= simple_form_for @study do |form| %>
+  <%= form.error_notification %>
 
-      <ul>
-      <% study.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
-      <% end %>
-      </ul>
-    </div>
-  <% end %>
+  <%= form.input :name, required: true %>
+  <%= form.input :description, required: true %>
+  <%= form.input :url %>
+  <%= form.input :visibility, collection: Study.visibilities.collect { |tuple| [tuple[1], tuple[0]] }, include_blank: false %>
 
-  <div class="field">
-    <%= form.label :name %>
-    <%= form.text_field :name %>
-  </div>
-
-  <div class="field">
-    <%= form.label :description %>
-    <%= form.text_area :description %>
-  </div>
-
-  <div class="field">
-    <%= form.label :url %>
-    <%= form.text_field :url %>
-  </div>
-
-  <div class="field">
-    <%= form.label :visibility %>
-    <%= form.select :visibility, Study.visibilities.collect { |tuple| [tuple[1], tuple[0]] }, { include_blank: false } %>
-  </div>
-
-  <div class="actions">
-    <%= form.submit %>
-  </div>
+  <%= form.button :submit, class: "btn-primary" %>
 <% end %>
