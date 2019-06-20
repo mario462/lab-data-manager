@@ -10,12 +10,13 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_06_20_041853) do
+ActiveRecord::Schema.define(version: 2019_06_20_042523) do
 
   create_table "data_types", force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "dataset_id"
   end
 
   create_table "datasets", force: :cascade do |t|
@@ -30,6 +31,7 @@ ActiveRecord::Schema.define(version: 2019_06_20_041853) do
     t.text "quotation"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "study_id"
   end
 
   create_table "studies", force: :cascade do |t|
