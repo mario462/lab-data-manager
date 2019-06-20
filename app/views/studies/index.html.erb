@@ -19,7 +19,7 @@
             <i>No URL available for this study.</i>
           <% end %>
         </p>
-        <p>Visibility: <%= Study.visibilities[study.visibility] %></p>
+        <p>Visibility: <%= study.visibility_as_string %></p>
         <%= link_to 'Show', study, class: "btn btn-primary btn-sm" %>
         <%= link_to 'Edit', edit_study_path(study), class: "btn btn-primary btn-sm" %>
         <%= link_to 'Destroy', study, method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-danger btn-sm" %>

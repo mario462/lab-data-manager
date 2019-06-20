@@ -28,7 +28,7 @@
 
   <div class="field">
     <%= form.label :visibility %>
-    <%= form.number_field :visibility %>
+    <%= form.select :visibility, Study.visibilities.collect { |tuple| [tuple[1], tuple[0]] }, { include_blank: false } %>
   </div>
 
   <div class="actions">
