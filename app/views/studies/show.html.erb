@@ -1,22 +1,20 @@
-<p>
-  <strong>Name:</strong>
-  <%= @study.name %>
-</p>
-
-<p>
-  <strong>Description:</strong>
-  <%= @study.description %>
-</p>
-
-<p>
-  <strong>Url:</strong>
-  <%= @study.url %>
-</p>
-
+<h2><%= @study.name %></h2>
+<% if @study.url? %>
+  (<%= link_to @study.url, @study.url, target: "_blank" %>)
+<% else %>
+  (<i>No URL available for this study.</i>)
+<% end %>
+<br/>
+<br/>
 <p>
   <strong>Visibility:</strong>
   <%= @study.visibility_as_string %>
 </p>
+<strong>Description:</strong><br/>
+<p><%= @study.description %></p>
+<br/>
 
-<%= link_to 'Edit', edit_study_path(@study) %> |
-<%= link_to 'Back', studies_path %>
+<div style="margin-top: 10px;">
+  <%= link_to 'Edit', edit_study_path(@study), class: "btn btn-primary btn-sm" %>
+  <%= link_to 'Back', studies_path, class: "btn btn-outline-secondary btn-sm" %>
+</div>

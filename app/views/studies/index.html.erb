@@ -1,30 +1,28 @@
-<div class="container-fluid">
-  <div class="row">
-    <div class="col-10">
-      <h2>Available Studies</h2>
-    </div>
-    <div class="col-2">
-      <%= link_to 'New Study', new_study_path, class: "btn btn-primary" %>
-    </div>
+<div class="row">
+  <div class="col-10">
+    <h2>Available Studies</h2>
   </div>
-  <ul class="list-group list-group-flush">
-    <% @studies.each do |study| %>
-      <li class="list-group-item">
-        <h3><%= study.name %></h3>
-        <p><%= study.description %></p>
-        <p>
-          <% if study.url? %>
-            <%= link_to study.url, study.url, target: "_blank" %>
-          <% else %>
-            <i>No URL available for this study.</i>
-          <% end %>
-        </p>
-        <p>Visibility: <%= study.visibility_as_string %></p>
-        <%= link_to 'Show', study, class: "btn btn-primary btn-sm" %>
-        <%= link_to 'Edit', edit_study_path(study), class: "btn btn-primary btn-sm" %>
-        <%= link_to 'Destroy', study, method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-danger btn-sm" %>
-      </li>
-    <% end %>
-  </ul>
-  <br/>
+  <div class="col-2">
+    <%= link_to 'New Study', new_study_path, class: "btn btn-primary" %>
+  </div>
 </div>
+<ul class="list-group list-group-flush">
+  <% @studies.each do |study| %>
+    <li class="list-group-item">
+      <h3><%= study.name %></h3>
+      <p><%= study.description %></p>
+      <p>
+        <% if study.url? %>
+          <%= link_to study.url, study.url, target: "_blank" %>
+        <% else %>
+          <i>No URL available for this study.</i>
+        <% end %>
+      </p>
+      <p>Visibility: <%= study.visibility_as_string %></p>
+      <%= link_to 'Show', study, class: "btn btn-primary btn-sm" %>
+      <%= link_to 'Edit', edit_study_path(study), class: "btn btn-primary btn-sm" %>
+      <%= link_to 'Destroy', study, method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-danger btn-sm" %>
+    </li>
+  <% end %>
+</ul>
+<br/>
