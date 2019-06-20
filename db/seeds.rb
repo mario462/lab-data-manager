@@ -5,3 +5,8 @@
 #
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
+
+datatypes = %w(bio clinic ct dMRI fMRI GENE sMRI SPECT PET OTHER)
+datatypes.each { |datatype|
+  DataType.create(name: datatype)
+}
