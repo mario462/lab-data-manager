@@ -10,10 +10,24 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_06_20_025146) do
+ActiveRecord::Schema.define(version: 2019_06_20_030622) do
 
   create_table "data_types", force: :cascade do |t|
     t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "datasets", force: :cascade do |t|
+    t.string "name"
+    t.text "description"
+    t.binary "attachment"
+    t.binary "data"
+    t.integer "year"
+    t.string "url"
+    t.integer "number_subjects"
+    t.string "pipeline"
+    t.text "quotation"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
