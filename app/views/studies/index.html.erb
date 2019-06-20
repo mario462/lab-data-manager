@@ -1,31 +1,30 @@
-<h1>Studies</h1>
-
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Description</th>
-      <th>Url</th>
-      <th>Visibility</th>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
-
-  <tbody>
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-10">
+      <h2>Available Studies</h2>
+    </div>
+    <div class="col-2">
+      <%= link_to 'New Study', new_study_path, class: "btn btn-primary" %>
+    </div>
+  </div>
+  <ul class="list-group list-group-flush">
     <% @studies.each do |study| %>
-      <tr>
-        <td><%= study.name %></td>
-        <td><%= study.description %></td>
-        <td><%= study.url %></td>
-        <td><%= study.visibility %></td>
-        <td><%= link_to 'Show', study %></td>
-        <td><%= link_to 'Edit', edit_study_path(study) %></td>
-        <td><%= link_to 'Destroy', study, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-      </tr>
+      <li class="list-group-item">
+        <h3><%= study.name %></h3>
+        <p><%= study.description %></p>
+        <p>
+          <% if study.url? %>
+            <%= link_to study.url, study.url, target: "_blank" %>
+          <% else %>
+            <i>No URL available for this study.</i>
+          <% end %>
+        </p>
+        <p>Visibility: <%= Study.visibilities[study.visibility] %></p>
+        <%= link_to 'Show', study, class: "btn btn-primary btn-sm" %>
+        <%= link_to 'Edit', edit_study_path(study), class: "btn btn-primary btn-sm" %>
+        <%= link_to 'Destroy', study, method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-danger btn-sm" %>
+      </li>
     <% end %>
-  </tbody>
-</table>
-
-<br>
-
-<%= link_to 'New Study', new_study_path %>
+  </ul>
+  <br/>
+</div>

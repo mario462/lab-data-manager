@@ -1,6 +1,10 @@
 module Visibility
   extend ActiveSupport::Concern
   included do
-    enum Visibility: [:Private, :Protected, :Public]
+    enum visibility: {
+        private_access: "Private",
+        apply_access: "Apply for Access",
+        open_use: "Open Use"
+    }
   end
 end
