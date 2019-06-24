@@ -12,9 +12,42 @@
 </p>
 <strong>Description:</strong><br/>
 <p><%= @study.description %></p>
-<br/>
 
 <div style="margin-top: 10px;">
   <%= link_to 'Edit', edit_study_path(@study), class: "btn btn-primary btn-sm" %>
   <%= link_to 'Back', studies_path, class: "btn btn-outline-secondary btn-sm" %>
 </div>
+<hr/>
+<div class="row">
+  <div class="col-10">
+    <h2>Available Datasets</h2>
+  </div>
+  <div class="col-2">
+    <%= link_to 'New Dataset', new_study_path, class: "btn btn-primary" %>
+  </div>
+</div>
+<% if !@datasets.any? %>
+  <i>(No datasets available for this study.)</i>
+<% else %>
+  <ul class="list-group list-group-flush">
+    <% @datasets.each do |dataset| %>
+      <li class="list-group-item">
+        <%= dataset.name %>
+  <!--      <h3><%#= study.name %></h3>-->
+  <!--      <p><%#= study.description %></p>-->
+  <!--      <p>-->
+          <%# if study.url? %>
+            <%#= link_to study.url, study.url, target: "_blank" %>
+          <%# else %>
+  <!--          <i>No URL available for this study.</i>-->
+          <%# end %>
+  <!--      </p>-->
+  <!--      <p>Visibility: <%#= study.visibility_as_string %></p>-->
+        <%#= link_to 'Show', study, class: "btn btn-primary btn-sm" %>
+        <%#= link_to 'Edit', edit_study_path(study), class: "btn btn-primary btn-sm" %>
+        <%#= link_to 'Destroy', study, method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-danger btn-sm" %>
+      </li>
+    <% end %>
+  </ul>
+<% end %>
+<br/>
