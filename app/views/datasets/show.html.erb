@@ -1,0 +1,15 @@
+<h2><%= @dataset.name %></h2>
+<% if @dataset.url? %>
+  (<%= link_to @dataset.url, @dataset.url, target: "_blank" %>)
+<% else %>
+  (<i>No URL available for this dataset.</i>)
+<% end %>
+<br/>
+<br/>
+<strong>Description:</strong><br/>
+<p><%= @dataset.description %></p>
+
+<div style="margin-top: 10px;">
+  <%= link_to 'Edit', edit_dataset_path(@dataset), class: "btn btn-primary btn-sm" %>
+  <%= link_to 'Back', datasets_path, class: "btn btn-outline-secondary btn-sm" %>
+</div>

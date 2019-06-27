@@ -5,6 +5,7 @@ gem 'bootstrap', '~> 4.3.1'
 gem 'jquery-rails'
 gem 'devise'
 gem 'simple_form'
+gem 'carrierwave'
 
 ruby '2.6.3'
 

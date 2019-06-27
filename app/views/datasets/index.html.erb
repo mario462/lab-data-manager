@@ -1,0 +1,27 @@
+<div class="row">
+  <div class="col-10">
+    <h2>Available Datasets</h2>
+  </div>
+</div>
+<% if !@datasets.any? %>
+  <i>(No datasets available.)</i>
+<% else %>
+  <ul class="list-group list-group-flush">
+    <% @datasets.each do |dataset| %>
+      <li class="list-group-item">
+        <h3><%= dataset.name %></h3>
+        <p><%= dataset.description %></p>
+        <p>
+          <% if dataset.url? %>
+            <%= link_to dataset.url, dataset.url, target: "_blank" %>
+          <% else %>
+            <i>No URL available for this dataset.</i>
+          <% end %>
+        </p>
+        <%= link_to 'Show', dataset, class: "btn btn-primary btn-sm" %>
+        <%= link_to 'Edit', edit_dataset_path(dataset), class: "btn btn-primary btn-sm" %>
+        <%= link_to 'Destroy', dataset, method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-danger btn-sm" %>
+      </li>
+    <% end %>
+  </ul>
+<% end %>

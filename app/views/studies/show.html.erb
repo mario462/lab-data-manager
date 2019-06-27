@@ -23,7 +23,7 @@
     <h2>Available Datasets</h2>
   </div>
   <div class="col-2">
-    <%= link_to 'New Dataset', new_study_path, class: "btn btn-primary" %>
+    <%= link_to 'New Dataset', new_dataset_path(study: @study), class: "btn btn-primary" %>
   </div>
 </div>
 <% if !@datasets.any? %>

@@ -1,0 +1,23 @@
+
+<%= simple_form_for(@dataset, :html => { :multipart => true }) do |f| %>
+  <%= f.error_notification %>
+  <%= f.error_notification message: f.object.errors[:base].to_sentence if f.object.errors[:base].present? %>
+
+  <div class="form-inputs">
+    <%= f.input :name, required: true %>
+    <%= f.input :description, required: true %>
+    <%= f.input :url %>
+    <%= f.input :data_type_id, collection: DataType.all.collect { |datatype| [datatype.name, datatype.id] }, include_blank: false %>
+    <%= f.input :year %>
+    <%= f.input :number_subjects %>
+    <%= f.input :pipeline %>
+    <%= f.input :quotation %>
+    <%= f.input :data, as: :file %>
+    <%= f.input :attachment, as: :file %>
+    <%= f.hidden_field :study_id %>
+  </div>
+
+  <div class="form-actions">
+    <%= f.button :submit, class: "btn-primary" %>
+  </div>
+<% end %>
