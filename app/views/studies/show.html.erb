@@ -1,6 +1,6 @@
 <h2><%= @study.name %></h2>
 <% if @study.url? %>
-  (<%= link_to @study.url, @study.url, target: "_blank" %>)
+  <%= link_to @study.url, @study.url, target: "_blank" %>
 <% else %>
   (<i>No URL available for this study.</i>)
 <% end %>
@@ -35,7 +35,12 @@
         <div>
           <h4><%= link_to dataset.name, dataset %></h4>
           <div>
-            <strong>Data type:</strong> <%= dataset.data_type.nil? ? "Not available" : dataset.data_type.name %>
+            <strong>Data type:</strong>
+            <% if dataset.data_type.nil? %>
+              (<i>Not available.</i>)
+            <% else %>
+              <%= dataset.data_type.name %>
+            <% end %>
             &nbsp;
             <strong>Year:</strong> <%= dataset.year %>
             &nbsp;

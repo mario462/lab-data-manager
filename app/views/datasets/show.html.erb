@@ -1,6 +1,6 @@
 <h2><%= @dataset.name %></h2>
 <% if @dataset.url? %>
-  (<%= link_to @dataset.url, @dataset.url, target: "_blank" %>)
+  <%= link_to @dataset.url, @dataset.url, target: "_blank" %>
 <% else %>
   (<i>No URL available for this dataset.</i>)
 <% end %>
@@ -8,6 +8,57 @@
 <br/>
 <strong>Description:</strong><br/>
 <p><%= @dataset.description %></p>
+
+<strong>Data Type:</strong><br/>
+<p>
+  <% if @dataset.data_type.nil? %>
+    (<i>Not available.</i>)
+  <% else %>
+    <%= @dataset.data_type.name %>
+  <% end %>
+</p>
+
+<strong>Year:</strong><br/>
+<p><%= @dataset.year %></p>
+
+<strong>Number of Subjects:</strong><br/>
+<p><%= @dataset.number_subjects %></p>
+
+<strong>Pipeline:</strong><br/>
+<p>
+  <% if @dataset.pipeline.empty? %>
+    (<i>Not available.</i>)
+  <% else %>
+    <%= @dataset.pipeline %>
+  <% end %>
+</p>
+
+<strong>Quotation:</strong><br/>
+<p>
+  <% if @dataset.quotation.empty? %>
+    (<i>Not available.</i>)
+  <% else %>
+    <%= @dataset.quotation %>
+  <% end %>
+</p>
+
+<strong>Data:</strong><br/>
+<p>
+  <% if @dataset.data.nil? || @dataset.data.path.nil? %>
+    (<i>Not available.</i>)
+  <% else %>
+    <%= link_to @dataset.data.filename, @dataset.data.url %>
+  <% end %>
+</p>
+
+<strong>Attachment:</strong><br/>
+<p>
+  <% if @dataset.attachment.nil? || @dataset.attachment.path.nil? %>
+    (<i>Not available.</i>)
+  <% else %>
+    <%= link_to @dataset.attachment.filename, @dataset.attachment.url %>
+  <% end %>
+</p>
 
 <div style="margin-top: 10px;">
   <%= link_to 'Edit', edit_dataset_path(@dataset), class: "btn btn-primary btn-sm" %>

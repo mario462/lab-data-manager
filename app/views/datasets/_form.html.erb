@@ -12,8 +12,25 @@
     <%= f.input :number_subjects %>
     <%= f.input :pipeline %>
     <%= f.input :quotation %>
-    <%= f.input :data, as: :file %>
-    <%= f.input :attachment, as: :file %>
+    <label>Data:</label>
+    <br/>
+    <% unless @dataset.data.nil? || @dataset.data.path.nil?  %>
+      <i><%= @dataset.data.filename %></i>
+      <br/>
+    <% end %>
+    <%= f.file_field :data %>
+    <br/>
+    <br/>
+    <label>Attachment:</label>
+    <br/>
+    <% unless @dataset.attachment.nil? || @dataset.attachment.path.nil?  %>
+      <i><%= @dataset.attachment.filename %></i>
+      <br/>
+    <% end %>
+    <%= f.file_field :attachment %>
+    <br/>
+    <br/>
+    <br/>
     <%= f.hidden_field :study_id %>
   </div>
 
