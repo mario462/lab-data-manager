@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  resources :datasets
+  resources :datasets, except: :index
   root to: 'home#index'
   get 'home/index'
   devise_for :users

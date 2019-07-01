@@ -8,7 +8,7 @@ class DatasetsController < ApplicationController
   end
 
   # GET /datasets/1
-  # GET /datasets/1.json
+  # GET /datasets/1.jso
   def show
   end
 
