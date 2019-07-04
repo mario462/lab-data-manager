@@ -1,11 +1,28 @@
 class StudiesController < ApplicationController
   include Access
-  before_action :set_study, only: [:show, :edit, :update, :destroy]
+  before_action :set_study, only: [:show, :edit, :update, :destroy, :toggle_favorite]
 
   # GET /studies
   # GET /studies.json
   def index
     @studies = current_user.available_studies
+  end
+
+  def favorites
+    @studies = current_user.favorites
+    @favorites = true
+    render 'studies/index'
+  end
+
+  def toggle_favorite
+    if @study.in? current_user.favorites
+      current_user.favorites.delete(@study)
+      notice = "The study has been removed from your favorites."
+    else
+      current_user.favorites << @study
+      notice = "The study has been added to your favorites."
+    end
+    redirect_back fallback_location: studies_path, notice: notice
   end
 
   # GET /studies/1
@@ -66,6 +83,7 @@ class StudiesController < ApplicationController
   private
     def set_study_owner(study)
       Permission.create(study: study, user: current_user, access: Access::DESTROY)
+      current_user.favorites << study
     end
 
     # Use callbacks to share common setup or constraints between actions.

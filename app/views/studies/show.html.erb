@@ -1,4 +1,13 @@
-<h2><%= @study.name %></h2>
+<div class="container", style="margin: 0px">
+  <div class="row">
+    <h2 style="margin-right: 20px"><%= @study.name %></h2>
+    <span>
+      <%= link_to(
+              image_tag(@study.in?(current_user.favorites) ? 'filled-star.png' : 'empty-star.png', style: "display: inline; width: 40px;"),
+              toggle_favorite_study_path(@study), method: :post) %>
+    </span>
+  </div>
+</div>
 <% if @study.url? %>
   <%= link_to @study.url, @study.url, target: "_blank" %>
 <% else %>

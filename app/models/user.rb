@@ -5,6 +5,8 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :validatable
   has_many :permissions
   has_many :studies, through: :permissions
+  has_many :favorite_studies
+  has_many :favorites, through: :favorite_studies, source: :study
 
   def available_studies
     Study.all.reject do |s|
