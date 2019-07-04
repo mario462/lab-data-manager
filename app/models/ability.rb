@@ -10,11 +10,11 @@ class Ability
       end
       can :edit, Study do |study|
         permission = user.permissions.where(study: study).first
-        (permission.access >= Access::EDIT) unless permission.nil?
+        permission.nil? ? false : (permission.access >= Access::EDIT)
       end
       can :destroy, Study do |study|
         permission = user.permissions.where(study: study).first
-        (permission.access >= Access::DESTROY) unless permission.nil?
+        permission.nil? ? false : (permission.access >= Access::DESTROY)
       end
     end
   end
