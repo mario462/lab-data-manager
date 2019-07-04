@@ -6,6 +6,7 @@ gem 'jquery-rails'
 gem 'devise'
 gem 'simple_form'
 gem 'carrierwave'
+gem 'cancancan'
 
 ruby '2.6.3'
 
