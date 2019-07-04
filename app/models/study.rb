@@ -1,6 +1,8 @@
 class Study < ApplicationRecord
   include Visibility
   has_many :datasets
+  has_many :permissions
+  has_many :users, through: :permissions
   validates :name, :presence => true, :length => { :minimum => 5, :maximum => 50}
   validates :description, :length => { :minimum => 10 }
   validates :visibility, :presence => true

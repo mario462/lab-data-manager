@@ -1,10 +1,11 @@
 class StudiesController < ApplicationController
+  include Access
   before_action :set_study, only: [:show, :edit, :update, :destroy]
 
   # GET /studies
   # GET /studies.json
   def index
-    @studies = Study.all
+    @studies = current_user.available_studies
   end
 
   # GET /studies/1
@@ -28,6 +29,7 @@ class StudiesController < ApplicationController
 
     respond_to do |format|
       if @study.save
+        set_study_owner(@study)
         format.html { redirect_to @study, notice: 'Study was successfully created.' }
         format.json { render :show, status: :created, location: @study }
       else
@@ -62,6 +64,10 @@ class StudiesController < ApplicationController
   end
 
   private
+    def set_study_owner(study)
+      Permission.create(study: study, user: current_user, access: Access::DESTROY)
+    end
+
     # Use callbacks to share common setup or constraints between actions.
     def set_study
       @study = Study.find(params[:id])
