@@ -8,22 +8,11 @@ class StudiesController < ApplicationController
     options = { fallback_location: study_path(@study) }
     notice = 'Successfully added new member.'
     params = add_member_params
-    member = User.find_by_email(params[:email])
-    if member.nil?
-      options[:alert] = 'There are no users with that email address.'
-    else
-      permission = Permission.where(user_id: member.id, study_id: @study.id).first
-      unless permission.nil?
-        options[:alert] = 'That user is already a member of the study. Try modifying existing member access.'
-      else
-        permission = Permission.new(study: @study, user: member, access: params[:access])
-        unless permission.save
-          options[:alert] = 'There was an error adding the user to the study.'
-        end
-      end
-    end
-    unless :alert.in?(options)
+    error_message = @study.add_member(params)
+    if error_message.nil?
       options[:notice] = notice
+    else
+      options[:alert] = error_message
     end
     redirect_back options
   end

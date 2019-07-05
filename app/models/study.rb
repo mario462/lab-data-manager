@@ -14,4 +14,23 @@ class Study < ApplicationRecord
   def datatypes
     self.datasets.map(&:datatype)
   end
+
+  def add_member(params)
+    error_message = nil
+    member = User.find_by_email(params[:email])
+    if member.nil?
+      error_message = 'There are no users with that email address.'
+    else
+      permission = Permission.where(user_id: member.id, study_id: self.id).first
+      unless permission.nil?
+        error_message = 'That user is already a member of the study. Try modifying existing member access.'
+      else
+        permission = Permission.new(study: self, user: member, access: params[:access])
+        unless permission.save
+          error_message = 'There was an error adding the user to the study.'
+        end
+      end
+    end
+    error_message
+  end
 end
