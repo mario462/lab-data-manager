@@ -1,11 +1,26 @@
 class StudiesController < ApplicationController
   include Access
-  before_action :set_study, only: [:show, :edit, :update, :destroy, :toggle_favorite]
+  before_action :set_study, only: [:show, :edit, :update, :destroy, :toggle_favorite, :members, :permission]
+  before_action :set_permission, only: [:permission]
 
-  # GET /studies
-  # GET /studies.json
-  def index
-    @studies = current_user.available_studies
+  def permission
+    options = { fallback_location: study_path(@study) }
+    notice = 'Permission updated successfully'
+    if @study.permissions.count <= 1
+      options[:alert] = 'You cannot modify permissions for a study with a single member.'
+    end
+    unless :alert.in?(options)
+      if @permission.update(permission_params)
+        options[:notice] = notice
+      else
+        options[:alert] = 'There was an error updating the permissions.'
+      end
+    end
+    redirect_back options
+  end
+
+  def members
+    @permissions = @study.permissions
   end
 
   def favorites
@@ -23,6 +38,12 @@ class StudiesController < ApplicationController
       notice = "The study has been added to your favorites."
     end
     redirect_back fallback_location: studies_path, notice: notice
+  end
+
+  # GET /studies
+  # GET /studies.json
+  def index
+    @studies = current_user.available_studies
   end
 
   # GET /studies/1
@@ -81,6 +102,10 @@ class StudiesController < ApplicationController
   end
 
   private
+    def set_permission
+      @permission = Permission.find(params[:id])
+    end
+
     def set_study_owner(study)
       Permission.create(study: study, user: current_user, access: Access::DESTROY)
       current_user.favorites << study
@@ -95,5 +120,9 @@ class StudiesController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def study_params
       params.require(:study).permit(:name, :description, :url, :visibility)
+    end
+
+    def permission_params
+      params.require(:permission).permit(:access)
     end
 end

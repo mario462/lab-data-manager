@@ -1,12 +1,17 @@
-<div class="container", style="margin: 0px">
-  <div class="row">
-    <h2 style="margin-right: 20px"><%= @study.name %></h2>
-    <span>
-      <%= link_to(
-              image_tag(@study.in?(current_user.favorites) ? 'filled-star.png' : 'empty-star.png', style: "display: inline; width: 40px;"),
-              toggle_favorite_study_path(@study), method: :post) %>
-    </span>
+<div class="row">
+  <div class="col-3">
+    <h2><%= @study.name %></h2>
   </div>
+  <div class="col-7">
+    <%= link_to(
+            image_tag(@study.in?(current_user.favorites) ? 'filled-star.png' : 'empty-star.png', style: "display: inline; width: 40px;"),
+            toggle_favorite_study_path(@study), method: :post) %>
+  </div>
+  <% if can? :destroy, @study %>
+    <div class="col-2">
+      <%= link_to 'Member Access', study_members_path(@study), class: "btn btn-primary" %>
+    </div>
+  <% end %>
 </div>
 <% if @study.url? %>
   <%= link_to @study.url, @study.url, target: "_blank" %>

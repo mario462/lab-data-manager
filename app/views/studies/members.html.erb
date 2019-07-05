@@ -1,0 +1,30 @@
+<h2>Study Members</h2>
+<table class="table table-striped">
+  <thead>
+  <tr>
+    <th scope="col">User</th>
+    <th scope="col">Access</th>
+    <th scope="col"></th>
+  </tr>
+  </thead>
+  <tbody>
+  <% @permissions.each do |permission| %>
+    <tr>
+      <%= form_for(permission, :html => { :class => 'form-inline' }) do |f| %>
+        <td colspan="1">
+          <%= permission.user.email %>
+        </td>
+        <td colspan="1">
+          <%= f.select :access,
+                       Access::keys.collect { |k| [Access::access_to_string(k), k] },
+                       {}, { :include_blank => false, class: 'form-control mb-2' } %>
+        </td>
+        <td colspan="1">
+          <%= f.submit 'Update Access', class: "btn btn-primary mb-2" %>
+        </td>
+      <% end %>
+    </tr>
+  <% end %>
+  </tbody>
+</table>
+<br/>

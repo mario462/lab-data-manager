@@ -3,6 +3,8 @@ Rails.application.routes.draw do
   root to: 'home#index'
   get 'home/index'
   devise_for :users
+  get 'studies/:id/members', to: 'studies#members', as: :study_members
+  patch 'studies/:id/permission', to: 'studies#permission', as: :permission
   post 'studies/toggle_favorite/:id', to: 'studies#toggle_favorite', as: :toggle_favorite_study
   get 'studies/favorites', to: 'studies#favorites', as: :favorite_studies
   resources :studies
