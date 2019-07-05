@@ -32,7 +32,7 @@
       </p>
       <p>Visibility: <%= study.visibility_as_string %></p>
       <% if cannot? :read, study %>
-        <%= link_to 'Apply for Access', '', class: "btn btn-primary btn-sm" %>
+        <%= link_to 'Apply for Access', access_requests_new_path(study_id: study.id), class: "btn btn-primary btn-sm" %>
       <% else %>
         <% if can? :read, study %>
           <%= link_to 'Show', study, class: "btn btn-primary btn-sm" %>

@@ -7,6 +7,8 @@ class User < ApplicationRecord
   has_many :studies, through: :permissions
   has_many :favorite_studies
   has_many :favorites, through: :favorite_studies, source: :study
+  has_many :access_requests
+  has_many :access_requested_for, through: :access_requests, source: :study
 
   def available_studies
     Study.all.reject do |s|

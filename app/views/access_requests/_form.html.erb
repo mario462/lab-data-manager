@@ -1,0 +1,9 @@
+<%= simple_form_for @request do |form| %>
+  <%= form.error_notification %>
+
+  <%= form.input :motivation, required: true %>
+  <%= form.hidden_field :study_id, required: true %>
+  <%= form.hidden_field :user_id, required: true %>
+
+  <%= form.button :submit, class: "btn-primary" %>
+<% end %>

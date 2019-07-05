@@ -5,6 +5,8 @@ class Study < ApplicationRecord
   has_many :users, through: :permissions
   has_many :favorite_studies, dependent: :delete_all
   has_many :favorited_by, through: :favorite_studies, source: :user
+  has_many :access_requests, dependent: :delete_all
+  has_many :requested_access_by, through: :access_requests, source: :user
 
   validates :name, :presence => true, :length => { :minimum => 5, :maximum => 50}
   validates :description, :length => { :minimum => 10 }
