@@ -57,7 +57,7 @@ class DatasetsController < ApplicationController
   def destroy
     @dataset.destroy
     respond_to do |format|
-      format.html { redirect_to datasets_url, notice: 'Dataset was successfully destroyed.' }
+      format.html { redirect_to study_path(@dataset.study), notice: 'Dataset was successfully destroyed.' }
       format.json { head :no_content }
     end
   end

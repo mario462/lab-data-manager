@@ -40,9 +40,6 @@
         <% if can? :edit, study %>
           <%= link_to 'Edit', edit_study_path(study), class: "btn btn-primary btn-sm" %>
         <% end %>
-        <% if can? :destroy, study %>
-          <%= link_to 'Destroy', study, method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-danger btn-sm" %>
-        <% end %>
       <% end %>
     </li>
   <% end %>

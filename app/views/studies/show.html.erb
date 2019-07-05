@@ -23,17 +23,26 @@
 <p><%= @study.description %></p>
 
 <div style="margin-top: 10px;">
-  <%= link_to 'Edit', edit_study_path(@study), class: "btn btn-primary btn-sm" %>
   <%= link_to 'Back', studies_path, class: "btn btn-outline-secondary btn-sm" %>
+  <% if can? :edit, @study %>
+    <%= link_to 'Edit', edit_study_path(@study), class: "btn btn-primary btn-sm" %>
+  <% end %>
+  <% if can? :destroy, @study %>
+    <%= link_to 'Destroy', @study, method: :delete,
+                data: { confirm: 'Are you sure? Deleting this study will delete all associated datasets.' },
+                class: "btn btn-danger btn-sm" %>
+  <% end %>
 </div>
 <hr/>
 <div class="row">
   <div class="col-10">
     <h2>Available Datasets</h2>
   </div>
-  <div class="col-2">
-    <%= link_to 'New Dataset', new_dataset_path(study: @study), class: "btn btn-primary" %>
-  </div>
+  <% if can? :edit, @study %>
+    <div class="col-2">
+      <%= link_to 'New Dataset', new_dataset_path(study: @study), class: "btn btn-primary" %>
+    </div>
+  <% end %>
 </div>
 <% if !@datasets.any? %>
   <i>(No datasets available for this study.)</i>

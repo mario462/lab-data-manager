@@ -61,6 +61,13 @@
 </p>
 
 <div style="margin-top: 10px;">
-  <%= link_to 'Edit', edit_dataset_path(@dataset), class: "btn btn-primary btn-sm" %>
   <%= link_to 'Back', @dataset.study, class: "btn btn-outline-secondary btn-sm" %>
+  <% if can? :edit, @dataset.study %>
+    <%= link_to 'Edit', edit_dataset_path(@dataset), class: "btn btn-primary btn-sm" %>
+  <% end %>
+  <% if can? :destroy, @dataset.study %>
+    <%= link_to 'Destroy', @dataset, method: :delete,
+                data: { confirm: 'Are you sure? Deleting this dataset will remove associated data.' },
+                class: "btn btn-danger btn-sm" %>
+  <% end %>
 </div>
