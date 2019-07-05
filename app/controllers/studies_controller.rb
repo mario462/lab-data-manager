@@ -1,20 +1,29 @@
 class StudiesController < ApplicationController
   include Access
-  before_action :set_study, only: [:show, :edit, :update, :destroy, :toggle_favorite, :members, :permission]
-  before_action :set_permission, only: [:permission]
+  before_action :set_study, only: [:show, :edit, :update, :destroy,
+                                   :toggle_favorite, :members, :add_member]
+  before_action :set_permission, only: [:update_permission]
 
-  def permission
+  def add_member
     options = { fallback_location: study_path(@study) }
-    notice = 'Permission updated successfully'
-    if @study.permissions.count <= 1
-      options[:alert] = 'You cannot modify permissions for a study with a single member.'
+    notice = 'Successfully added new member.'
+    params = add_member_params
+    member = User.find_by_email(params[:email])
+    if member.nil?
+      options[:alert] = 'There are no users with that email address.'
+    else
+      permission = Permission.where(user_id: member.id, study_id: @study.id).first
+      unless permission.nil?
+        options[:alert] = 'That user is already a member of the study. Try modifying existing member access.'
+      else
+        permission = Permission.new(study: @study, user: member, access: params[:access])
+        unless permission.save
+          options[:alert] = 'There was an error adding the user to the study.'
+        end
+      end
     end
     unless :alert.in?(options)
-      if @permission.update(permission_params)
-        options[:notice] = notice
-      else
-        options[:alert] = 'There was an error updating the permissions.'
-      end
+      options[:notice] = notice
     end
     redirect_back options
   end
@@ -124,5 +133,9 @@ class StudiesController < ApplicationController
 
     def permission_params
       params.require(:permission).permit(:access)
+    end
+
+    def add_member_params
+      params.permit(:email, :access)
     end
 end
