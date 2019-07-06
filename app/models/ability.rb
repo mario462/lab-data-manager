@@ -5,6 +5,9 @@ class Ability
 
   def initialize(user)
     if user.present?
+      if user.admin?
+        can :manage, :all
+      end
       can [:create, :favorites, :toggle_favorite], Study
       can :read, Study do |study|
         user.can_read?(study)
