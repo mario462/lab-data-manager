@@ -1,8 +1,8 @@
 class StudiesController < ApplicationController
   include Access
+  load_and_authorize_resource
   before_action :set_study, only: [:show, :edit, :update, :destroy,
                                    :toggle_favorite, :members, :add_member]
-  before_action :set_permission, only: [:update_permission]
 
   def add_member
     options = { fallback_location: study_path(@study) }
@@ -100,10 +100,6 @@ class StudiesController < ApplicationController
   end
 
   private
-    def set_permission
-      @permission = Permission.find(params[:id])
-    end
-
     def set_study_owner(study)
       Permission.create(study: study, user: current_user, access: Access::DESTROY)
       current_user.favorites << study

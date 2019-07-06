@@ -36,17 +36,31 @@ class Study < ApplicationRecord
     error_message
   end
 
+  def owners
+    Permission.where(study: self, access: Access::DESTROY)
+  end
+
+  def owned_by?(user)
+    !Permission.where(study: self, user: user, access: Access::DESTROY).first.nil?
+  end
+
+  def single_owner?(user)
+    owners.count <= 1 && owned_by?(user)
+  end
+
   def remove_member(params)
     error_message = nil
-    if self.permissions.count <= 1
-      error_message = 'You cannot remove the only member of the study. Try deleting the study instead.'
+    if params.member?(:permission)
+      permission = params[:permission]
     else
-      if params.member?(:permission)
-        params[:permission].destroy
-      else
-        permission = Permission.where(user: params[:user], study: params[:study]).first
-        permission.nil? ? error_message = 'That user is not a member of that project.' : permission.destroy
-      end
+      permission = Permission.where(user: params[:user], study: params[:study]).first
+    end
+    if permission.nil?
+      error_message = 'That user is not a member of that study.'
+    else
+      single_owner?(permission.user) ?
+          error_message = 'You cannot remove the only owner of a study. Try deleting the study instead.' :
+          permission.destroy
     end
     error_message
   end

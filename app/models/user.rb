@@ -19,4 +19,16 @@ class User < ApplicationRecord
   def owned_studies
     Permission.where('user_id = ? AND access >= ?', self.id, Access::DESTROY).collect(&:study)
   end
+
+  def can_read?(study)
+    study.visibility == Visibility::OPEN_USE || (study.in? self.studies)
+  end
+  def can_edit?(study)
+    permission = self.permissions.where(study: study).first
+    permission.nil? ? false : (permission.access >= Access::EDIT)
+  end
+  def owner?(study)
+    permission = self.permissions.where(study: study).first
+    permission.nil? ? false : (permission.access >= Access::DESTROY)
+  end
 end

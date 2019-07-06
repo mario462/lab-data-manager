@@ -5,16 +5,25 @@ class Ability
 
   def initialize(user)
     if user.present?
+      can [:create, :favorites, :toggle_favorite], Study
       can :read, Study do |study|
-        study.visibility == Visibility::OPEN_USE || (study.in? user.studies)
+        user.can_read?(study)
       end
-      can :edit, Study do |study|
-        permission = user.permissions.where(study: study).first
-        permission.nil? ? false : (permission.access >= Access::EDIT)
+      can [:edit, :update], Study do |study|
+        user.can_edit?(study)
       end
-      can :destroy, Study do |study|
-        permission = user.permissions.where(study: study).first
-        permission.nil? ? false : (permission.access >= Access::DESTROY)
+      can :manage, Study do |study|
+        user.owner?(study)
+      end
+
+      can :read, Dataset do |dataset|
+        user.can_read?(dataset.study)
+      end
+      can [:edit, :update], Dataset do |dataset|
+        user.can_edit?(dataset.study)
+      end
+      can :manage, Dataset do |dataset|
+        user.owner(dataset.study)
       end
     end
   end

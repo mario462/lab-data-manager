@@ -1,20 +1,17 @@
 class PermissionsController < ApplicationController
   before_action :set_permission, only: [:update, :destroy]
+  skip_authorization_check
 
   # PATCH/PUT /studies/1
   # PATCH/PUT /studies/1.json
   def update
     options = { fallback_location: study_path(@study) }
     notice = 'Permission updated successfully'
-    if @study.permissions.count <= 1
-      options[:alert] = 'You cannot modify permissions for a study with a single member.'
-    end
+    options[:alert] = 'You cannot modify permissions for the only study owner.' if @study.single_owner?(@permission.user)
     unless :alert.in?(options)
-      if @permission.update(permission_params)
-        options[:notice] = notice
-      else
-        options[:alert] = 'There was an error updating the permissions.'
-      end
+      @permission.update(permission_params) ?
+          options[:notice] = notice :
+          options[:alert] = 'There was an error updating the permissions.'
     end
     redirect_back options
   end
@@ -39,6 +36,7 @@ class PermissionsController < ApplicationController
   def set_permission
     @permission = Permission.find(params[:id])
     @study = @permission.study
+    authorize! :manage, @study
   end
 
   def permission_params

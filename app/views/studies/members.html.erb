@@ -10,38 +10,38 @@
   <tbody>
   <% @permissions.each do |permission| %>
       <tr>
-        <%= form_for permission, html: { class: 'form-inline', id: permission.id } do |f| %>
-          <%= hidden_field_tag :authenticity_token, form_authenticity_token, form: permission.id %>
           <td colspan="1">
-            <%= permission.user.email %>
+            <%= form_for permission, html: { class: 'form-inline', id: permission.id } do |f| %>
+              <%= permission.user.email %>
           </td>
           <td colspan="1">
-            <%= f.select :access,
+              <%= f.select :access,
                        Access::keys.collect { |k| [Access::access_to_string(k), k] },
                        {}, { :include_blank => false, class: 'form-control mb-2', form: permission.id } %>
           </td>
           <td colspan="1">
-            <%= f.submit 'Update Access', class: "btn btn-primary mb-2", form: permission.id %>
-            <%= link_to 'Remove Member', permission, method: :delete,
+              <%= f.submit 'Update Access', class: "btn btn-primary mb-2", form: permission.id %>
+              <%= link_to 'Remove Member', permission, method: :delete,
                         data: { confirm: 'Are you sure you want to remove this user from study?' },
                         class: "btn btn-danger mb-2" %>
+            <% end %>
           </td>
-        <% end %>
       </tr>
   <% end %>
   <tr>
-    <%= form_tag(add_member_path(@study), :html => { :class => 'form-inline' }) do %>
-      <td colspan="1">
-        <%= email_field_tag :email, nil, class: 'form-control mb-2' %>
-      </td>
-      <td colspan="1">
+    <td colspan="1">
+      <% form_id = 'add_member_form' %>
+      <%= form_tag(add_member_path(@study), class: 'form-inline', id: form_id) do %>
+        <%= email_field_tag :email, nil, class: 'form-control mb-2', style: 'width: 100%', form: form_id %>
+    </td>
+    <td colspan="1">
         <%= select_tag :access, options_for_select(Access::keys.collect { |k| [Access::access_to_string(k), k] }),
-                     include_blank: false, class: 'form-control mb-2' %>
-      </td>
-      <td colspan="1">
-        <%= submit_tag 'Add Member', class: "btn btn-primary mb-2" %>
-      </td>
-    <% end %>
+                   include_blank: false, class: 'form-control mb-2', form: form_id %>
+    </td>
+    <td colspan="1">
+        <%= submit_tag 'Add Member', class: "btn btn-primary mb-2", form: form_id %>
+      <% end %>
+    </td>
   </tr>
   </tbody>
 </table>

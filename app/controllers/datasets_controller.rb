@@ -1,5 +1,7 @@
 class DatasetsController < ApplicationController
   before_action :set_dataset, only: [:show, :edit, :update, :destroy]
+  load_and_authorize_resource
+  skip_authorize_resource only: [:new, :create]
 
   # GET /studies
   # GET /studies.json
@@ -14,7 +16,9 @@ class DatasetsController < ApplicationController
 
   # GET /datasets/new
   def new
-    @dataset = Dataset.new(year: Date.today.year, number_subjects: 1, study_id: params[:study])
+    study = Study.find(params[:study])
+    authorize! :edit, study
+    @dataset = Dataset.new(year: Date.today.year, number_subjects: 1, study: study)
   end
 
   # GET /datasets/1/edit
@@ -25,6 +29,8 @@ class DatasetsController < ApplicationController
   # POST /datasets.json
   def create
     @dataset = Dataset.new(dataset_params)
+    study = @dataset.study
+    authorize! :edit, study
     @dataset.data_type = DataType.find(@dataset.data_type_id)
 
     respond_to do |format|

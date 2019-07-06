@@ -1,6 +1,7 @@
 class AccessRequestsController < ApplicationController
   before_action :set_study, only: [:new]
   before_action :set_request, only: [:approve, :deny]
+  skip_authorization_check
 
   def approve
     @request.update(status: AccessRequestStatus::APPROVED)
@@ -18,7 +19,7 @@ class AccessRequestsController < ApplicationController
   def deny
     @request.update(status: AccessRequestStatus::DENIED)
     params = { user: @request.user, study: @request.study }
-    error_message = @study.remove_member(params)
+    error_message = @request.study.remove_member(params)
     options = { fallback_location: studies_path }
     if error_message
       options[:alert] = error_message
@@ -64,6 +65,7 @@ class AccessRequestsController < ApplicationController
   private
   def set_request
     @request = AccessRequest.find(params[:id])
+    authorize! :manage, @request.study
   end
   # Use callbacks to share common setup or constraints between actions.
   def set_study
