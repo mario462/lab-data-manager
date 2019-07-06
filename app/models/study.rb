@@ -19,18 +19,33 @@ class Study < ApplicationRecord
 
   def add_member(params)
     error_message = nil
-    member = User.find_by_email(params[:email])
+    member = params[:user] || User.find_by_email(params[:email])
     if member.nil?
       error_message = 'There are no users with that email address.'
     else
       permission = Permission.where(user_id: member.id, study_id: self.id).first
-      unless permission.nil?
-        error_message = 'That user is already a member of the study. Try modifying existing member access.'
-      else
+      if permission.nil?
         permission = Permission.new(study: self, user: member, access: params[:access])
         unless permission.save
           error_message = 'There was an error adding the user to the study.'
         end
+      else
+        error_message = 'That user is already a member of the study. Try modifying existing member access.'
+      end
+    end
+    error_message
+  end
+
+  def remove_member(params)
+    error_message = nil
+    if @study.permissions.count <= 1
+      error_message = 'You cannot remove the only member of the study. Try deleting the study instead.'
+    else
+      if params.member?(:permission)
+        params[:permission].destroy
+      else
+        permission = Permission.where(user: params[:user], study: params[:study]).first
+        permission.nil? ? error_message = 'That user is not a member of that project.' : permission.destroy
       end
     end
     error_message

@@ -23,10 +23,10 @@ class PermissionsController < ApplicationController
   # DELETE /studies/1.json
   def destroy
     options = { fallback_location: study_path(@study) }
-    if @study.permissions.count <= 1
-      options[:alert] = 'You cannot remove the only member of the study. Try deleting the study instead.'
+    error_message = @study.remove_member({ permission: @permission })
+    if error_message
+      options[:alert] = error_message
     else
-      @permission.destroy
       options[:notice] = 'Member was successfully removed from project.'
     end
     respond_to do |format|

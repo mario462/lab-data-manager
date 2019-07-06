@@ -1,5 +1,44 @@
 class AccessRequestsController < ApplicationController
   before_action :set_study, only: [:new]
+  before_action :set_request, only: [:approve, :deny]
+
+  def approve
+    @request.update(status: AccessRequestStatus::APPROVED)
+    params = { user: @request.user, access: Access::VIEW }
+    error_message = @request.study.add_member(params)
+    options = { fallback_location: studies_path }
+    if error_message
+      options[:alert] = error_message
+    else
+      options[:notice] = 'The request was successfully approved and user will be notified.'
+    end
+    redirect_back options
+  end
+
+  def deny
+    @request.update(status: AccessRequestStatus::DENIED)
+    params = { user: @request.user, study: @request.study }
+    error_message = @study.remove_member(params)
+    options = { fallback_location: studies_path }
+    if error_message
+      options[:alert] = error_message
+    else
+      options[:notice] = 'The request was denied and user will be notified.'
+    end
+    redirect_back options
+  end
+
+  def outgoing
+    @requests = AccessRequest.where(user: current_user)
+    render 'access_requests/index'
+  end
+
+  def incoming
+    @incoming = true
+    studies_ids = current_user.owned_studies.collect(&:id)
+    @requests = AccessRequest.where("study_id IN (?)", studies_ids)
+    render 'access_requests/index'
+  end
 
   # GET /studies/new
   def new
@@ -23,6 +62,9 @@ class AccessRequestsController < ApplicationController
   end
 
   private
+  def set_request
+    @request = AccessRequest.find(params[:id])
+  end
   # Use callbacks to share common setup or constraints between actions.
   def set_study
     @study = Study.find(params[:study_id])

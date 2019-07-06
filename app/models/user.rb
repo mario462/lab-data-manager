@@ -15,4 +15,8 @@ class User < ApplicationRecord
       s.visibility == Visibility::PRIVATE_ACCESS && !(s.in? self.studies)
     end
   end
+
+  def owned_studies
+    Permission.where('user_id = ? AND access >= ?', self.id, Access::DESTROY).collect(&:study)
+  end
 end
