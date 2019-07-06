@@ -38,7 +38,7 @@ class Study < ApplicationRecord
 
   def remove_member(params)
     error_message = nil
-    if @study.permissions.count <= 1
+    if self.permissions.count <= 1
       error_message = 'You cannot remove the only member of the study. Try deleting the study instead.'
     else
       if params.member?(:permission)
