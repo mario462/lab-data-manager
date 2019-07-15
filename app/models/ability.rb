@@ -26,7 +26,7 @@ class Ability
         user.can_edit?(dataset.study)
       end
       can :manage, Dataset do |dataset|
-        user.owner(dataset.study)
+        user.owner?(dataset.study)
       end
     end
   end
