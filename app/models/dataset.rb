@@ -1,6 +1,6 @@
 class Dataset < ApplicationRecord
   belongs_to :study
-  has_one :data_type
+  has_many :data_type
   attr_accessor :data_type_id
   mount_uploader :attachment, FileUploader
   mount_uploader :data, FileUploader
@@ -15,18 +15,26 @@ class Dataset < ApplicationRecord
             }
   validates :url, allow_blank: true,
             format: {
-                with: /https?:\/\/[\S]+/, message: "Must be a valid full URL."
+                with: /https?:\/\/[\S]+/, message: 'must be a valid full URL.'
             }
   validates :year, presence: true,
             inclusion: {
                 in: 1900..Date.today.year
             },
             format: {
-                with: /(19|20)\d{2}/i, message: "Should be a four-digit year"
+                with: /(19|20)\d{2}/i, message: 'should be a valid four-digit year.'
             }
   validates :number_subjects, presence: true,
             numericality: {
               only_integer: true,
               greater_than_or_equal_to: 0
             }
+  validates :data_type_ids,
+            length: {
+                minimum: 1, message: 'you must select at least one.'
+            }
+
+  def print_data_types
+    self.data_type.map(&:name).join(', ')
+  end
 end

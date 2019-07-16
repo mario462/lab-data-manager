@@ -31,7 +31,6 @@ class DatasetsController < ApplicationController
     @dataset = Dataset.new(dataset_params)
     study = @dataset.study
     authorize! :edit, study
-    @dataset.data_type = DataType.find(@dataset.data_type_id)
 
     respond_to do |format|
       if @dataset.save
@@ -76,7 +75,9 @@ class DatasetsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def dataset_params
-      params.require(:dataset).permit(:name, :description, :url, :data_type_id, :year, :number_subjects, :pipeline,
-                                      :quotation, :data, :attachment, :study_id)
+      filtered = params.require(:dataset).permit(:name, :description, :url, :year, :number_subjects, :pipeline,
+                                                 :quotation, :data, :attachment, :study_id, data_type_ids: [])
+      filtered[:data_type_ids].reject!(&:blank?)
+      filtered
     end
 end

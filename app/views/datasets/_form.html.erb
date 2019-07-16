@@ -7,7 +7,8 @@
     <%= f.input :name, required: true %>
     <%= f.input :description, required: true %>
     <%= f.input :url %>
-    <%= f.input :data_type_id, collection: DataType.all.collect { |datatype| [datatype.name, datatype.id] }, include_blank: false %>
+    <%= f.input :data_type_ids, required: true, collection: DataType.all.collect { |datatype| [datatype.name, datatype.id] },
+                include_blank: false, input_html: { multiple: true, id: "select_datatypes_for_#{@dataset.id}" } %>
     <%= f.input :year %>
     <%= f.input :number_subjects %>
     <%= f.input :pipeline %>
@@ -32,4 +33,25 @@
   <div class="form-actions">
     <%= f.button :submit, class: "btn-primary" %>
   </div>
+<% end %>
+
+<% content_for :javascript_code do %>
+  <script type="text/javascript">
+      $("#select_datatypes_for_<%= @dataset.id %>").mousedown(function (e) {
+          e.preventDefault();
+
+          var select = this;
+          var scroll = select.scrollTop;
+
+          e.target.selected = !e.target.selected;
+
+          setTimeout(function () {
+              select.scrollTop = scroll;
+          }, 0);
+
+          $(select).focus();
+      }).mousemove(function (e) {
+          e.preventDefault()
+      });
+  </script>
 <% end %>

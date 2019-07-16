@@ -14,7 +14,7 @@
   <% if @dataset.data_type.nil? %>
     (<i>Not available.</i>)
   <% else %>
-    <%= @dataset.data_type.name %>
+    <%= @dataset.print_data_types %>
   <% end %>
 </p>
 
