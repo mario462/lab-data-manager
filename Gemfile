@@ -8,6 +8,7 @@ gem 'simple_form'
 gem 'carrierwave'
 gem 'cancancan'
 gem 'rails_admin'
+gem 'rubocop'
 
 ruby '2.6.3'
 
