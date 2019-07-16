@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  mount RailsAdmin::Engine => '/admin', as: 'rails_admin'
   get 'access_requests/new'
   get 'access_requests/create'
   resources :datasets, except: :index

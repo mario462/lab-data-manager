@@ -7,6 +7,7 @@ gem 'devise'
 gem 'simple_form'
 gem 'carrierwave'
 gem 'cancancan'
+gem 'rails_admin'
 
 ruby '2.6.3'
 
