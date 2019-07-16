@@ -17,13 +17,13 @@ class AccessRequestsController < ApplicationController
   end
 
   def deny
-    @request.update(status: AccessRequestStatus::DENIED)
     params = { user: @request.user, study: @request.study }
     error_message = @request.study.remove_member(params)
     options = { fallback_location: studies_path }
     if error_message
       options[:alert] = error_message
     else
+      @request.update(status: AccessRequestStatus::DENIED)
       options[:notice] = 'The request was denied and user will be notified.'
     end
     redirect_back options
@@ -37,7 +37,7 @@ class AccessRequestsController < ApplicationController
   def incoming
     @incoming = true
     studies_ids = current_user.owned_studies.collect(&:id)
-    @requests = AccessRequest.where("study_id IN (?)", studies_ids)
+    @requests = AccessRequest.where("study_id IN (?) AND user_id != ?", studies_ids, current_user.id)
     render 'access_requests/index'
   end
 
