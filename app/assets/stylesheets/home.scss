@@ -1,3 +1,23 @@
 // Place all the styles related to the Home controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+
+.overview {
+  text-align: center;
+}
+
+.home-header {
+  padding-top: 50px;
+}
+
+.overview-cards .col-md {
+  padding: 50px 30px;
+}
+
+.card-img-top {
+  font-size: 60px;
+}
+
+.footer-container {
+  padding-top: 50px;
+}

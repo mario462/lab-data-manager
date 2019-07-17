@@ -1,2 +1,31 @@
-<h1>Home#index</h1>
-<p>Find me in app/views/home/index.html.erb</p>
+<div class="container-fluid overview">
+  <div class="row home-header">
+    <div class="col-md">
+      <h1>Welcome to the Lab Data Manager</h1>
+    </div>
+  </div>
+  <div class="row overview-cards">
+    <% @cards.each do |card| %>
+      <div class="col-md">
+        <div class="card">
+          <h1 class="card-img-top"><%= card.title %></h1>
+          <div class="card-body">
+            <p class="card-text"><%= card.subtitle %></p>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>
+<div class="container-fluid footer-container">
+  <div class="row">
+    <div class="col-md">
+      <h4>Who we are:</h4>
+      <h6><i>JOINT CHINA-CUBA LABORATORY FOR FRONTIER RESEARCH IN TRANSLATIONAL NEUROTECHNOLOGY</i></h6>
+      <p>We aim to develop knowledge, intellectual properties, products and services based on new technologies for the
+        assessment, treatment and rehabilitation of patients with neurological and psychiatric dysfunctions.</p>
+    </div>
+  </div>
+</div>
+
+

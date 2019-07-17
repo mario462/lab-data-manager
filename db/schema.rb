@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_07_06_095522) do
+ActiveRecord::Schema.define(version: 2019_07_17_052919) do
 
   create_table "access_requests", force: :cascade do |t|
     t.integer "study_id"
@@ -41,6 +41,7 @@ ActiveRecord::Schema.define(version: 2019_07_06_095522) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "study_id"
+    t.integer "downloads", default: 0
   end
 
   create_table "favorite_studies", force: :cascade do |t|
