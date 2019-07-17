@@ -11,9 +11,13 @@ class User < ApplicationRecord
   has_many :access_requested_for, through: :access_requests, source: :study
 
   def available_studies
-    Study.all.reject do |s|
-      (s.visibility == Visibility::PRIVATE_ACCESS || s.pending) && !(s.in? self.studies)
+    studies = Study.all
+    unless self.admin
+      studies.reject do |s|
+        (s.visibility == Visibility::PRIVATE_ACCESS || s.pending) && !(s.in? self.studies)
+      end
     end
+    studies
   end
 
   def owned_studies
