@@ -1,5 +1,5 @@
 class DatasetsController < ApplicationController
-  before_action :set_dataset, only: [:show, :edit, :update, :destroy]
+  before_action :set_dataset, only: [:show, :edit, :update, :destroy, :download]
   load_and_authorize_resource
   skip_authorize_resource only: [:new, :create]
 
@@ -65,6 +65,12 @@ class DatasetsController < ApplicationController
       format.html { redirect_to study_path(@dataset.study), notice: 'Dataset was successfully destroyed.' }
       format.json { head :no_content }
     end
+  end
+
+  def download
+    @dataset.downloads += 1
+    @dataset.save
+    send_file File.join(Rails.root, 'public', @dataset.data.url)
   end
 
   private

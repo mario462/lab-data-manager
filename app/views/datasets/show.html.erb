@@ -47,7 +47,7 @@
   <% if @dataset.data.nil? || @dataset.data.path.nil? %>
     (<i>Not available.</i>)
   <% else %>
-    <%= link_to @dataset.data.filename, @dataset.data.url %>
+    <%= link_to @dataset.data.filename, download_dataset_path %>
   <% end %>
 </p>
 
