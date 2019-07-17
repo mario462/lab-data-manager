@@ -20,6 +20,11 @@
                 image_tag(study.in?(current_user.favorites) ? 'filled-star.png' : 'empty-star.png', style: "display: inline; width: 30px;"),
                 toggle_favorite_study_path(study), method: :post) %>
           </span>
+          <% if study.pending %>
+            <span style="padding-left: 50px">
+              <i>(Pending approval)</i>
+            </span>
+          <% end %>
         </div>
       </div>
       <p><%= study.description %></p>

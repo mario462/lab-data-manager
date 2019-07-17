@@ -12,7 +12,7 @@ class User < ApplicationRecord
 
   def available_studies
     Study.all.reject do |s|
-      s.visibility == Visibility::PRIVATE_ACCESS && !(s.in? self.studies)
+      (s.visibility == Visibility::PRIVATE_ACCESS || s.pending) && !(s.in? self.studies)
     end
   end
 
@@ -21,7 +21,7 @@ class User < ApplicationRecord
   end
 
   def can_read?(study)
-    study.visibility == Visibility::OPEN_USE || (study.in? self.studies)
+    (!study.pending && study.visibility == Visibility::OPEN_USE) || (study.in? self.studies)
   end
   def can_edit?(study)
     permission = self.permissions.where(study: study).first

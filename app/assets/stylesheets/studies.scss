@@ -1,3 +1,14 @@
 // Place all the styles related to the Studies controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+
+.study-name {
+  display: inline;
+}
+
+.favorite-star {
+  display: inline;
+  width: 60px;
+  padding-left: 20px;
+  padding-bottom: 20px;
+}

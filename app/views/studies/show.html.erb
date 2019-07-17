@@ -1,15 +1,22 @@
 <div class="row">
-  <div class="col-3">
-    <h2><%= @study.name %></h2>
-  </div>
-  <div class="col-7">
+  <div class="col-<%= @study.pending ? '8' : '10' %>">
+    <h2 class="study-name"><%= @study.name %></h2>
     <%= link_to(
-            image_tag(@study.in?(current_user.favorites) ? 'filled-star.png' : 'empty-star.png', style: "display: inline; width: 40px;"),
+            image_tag(@study.in?(current_user.favorites) ? 'filled-star.png' : 'empty-star.png', class: 'favorite-star'),
             toggle_favorite_study_path(@study), method: :post) %>
+    <% if @study.pending %>
+      <h6>(Pending approval)</h6>
+      <br/>
+    <% end %>
   </div>
   <% if can? :destroy, @study %>
+    <% if @study.pending %>
+      <div class="col-2">
+        <%= link_to 'Approve Study', approve_study_path(@study), method: :post, class: "btn btn-success" %>
+      </div>
+    <% end %>
     <div class="col-2">
-      <%= link_to 'Member Access', study_members_path(@study), class: "btn btn-primary" %>
+      <%= link_to 'Member Access', study_members_path(@study), class: 'btn btn-primary' %>
     </div>
   <% end %>
 </div>

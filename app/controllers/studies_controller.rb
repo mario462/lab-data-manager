@@ -2,7 +2,7 @@ class StudiesController < ApplicationController
   include Access
   load_and_authorize_resource
   before_action :set_study, only: [:show, :edit, :update, :destroy,
-                                   :toggle_favorite, :members, :add_member]
+                                   :toggle_favorite, :members, :add_member, :approve]
 
   def add_member
     options = { fallback_location: study_path(@study) }
@@ -97,6 +97,12 @@ class StudiesController < ApplicationController
       format.html { redirect_to studies_url, notice: 'Study was successfully destroyed.' }
       format.json { head :no_content }
     end
+  end
+
+  def approve
+    @study.pending = false
+    @study.save
+    redirect_back(fallback_location: studies_path)
   end
 
   private

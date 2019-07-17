@@ -10,6 +10,7 @@ Rails.application.routes.draw do
   get 'studies/:id/members', to: 'studies#members', as: :study_members
   post 'studies/toggle_favorite/:id', to: 'studies#toggle_favorite', as: :toggle_favorite_study
   get 'studies/favorites', to: 'studies#favorites', as: :favorite_studies
+  post 'studies/approve/:id', to: 'studies#approve', as: :approve_study
   get 'access_requests/outgoing', to: 'access_requests#outgoing', as: :outgoing_access_requests
   get 'access_requests/incoming', to: 'access_requests#incoming', as: :incoming_access_requests
   post 'access_requests/:id/approve', to: 'access_requests#approve', as: :approve_access_request

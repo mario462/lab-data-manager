@@ -37,4 +37,16 @@ class Dataset < ApplicationRecord
   def print_data_types
     self.data_type.map(&:name).join(', ')
   end
+
+  def self.approved
+    Dataset.where('pending != ?', true)
+  end
+
+  def self.pending
+    Dataset.where('pending == ?', true)
+  end
+
+  def self.public
+    self.approved.reject { |s| s.visibility == Visibility::PRIVATE_ACCESS }
+  end
 end

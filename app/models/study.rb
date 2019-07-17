@@ -13,6 +13,18 @@ class Study < ApplicationRecord
   validates :visibility, :presence => true
   validates :url, :allow_blank => true, :format => { :with => /https?:\/\/[\S]+/, :message => 'must be a valid full URL.' }
 
+  def self.approved
+    Study.where('pending != ?', true)
+  end
+
+  def self.pending
+    Study.where('pending == ?', true)
+  end
+
+  def self.public
+    self.approved.reject { |s| s.visibility == Visibility::PRIVATE_ACCESS }
+  end
+
   def datatypes
     self.datasets.map(&:datatype)
   end
