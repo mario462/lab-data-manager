@@ -10,6 +10,8 @@ class User < ApplicationRecord
   has_many :access_requests
   has_many :access_requested_for, through: :access_requests, source: :study
 
+  validates :registration_reason, presence: true, length: { minimum: 20 }
+  
   def available_studies
     studies = Study.all
     unless self.admin
