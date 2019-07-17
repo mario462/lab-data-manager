@@ -36,7 +36,7 @@ class PermissionsController < ApplicationController
   def set_permission
     @permission = Permission.find(params[:id])
     @study = @permission.study
-    authorize! :manage, @study
+    authorize! :add_member, @study
   end
 
   def permission_params

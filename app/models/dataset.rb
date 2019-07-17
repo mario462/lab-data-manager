@@ -37,4 +37,8 @@ class Dataset < ApplicationRecord
   def print_data_types
     self.data_type.map(&:name).join(', ')
   end
+
+  def visibility
+    self.study.pending ? Visibility::PRIVATE_ACCESS : self.study.visibility
+  end
 end

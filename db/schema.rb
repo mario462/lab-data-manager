@@ -42,7 +42,7 @@ ActiveRecord::Schema.define(version: 2019_07_17_061108) do
     t.datetime "updated_at", null: false
     t.integer "study_id"
     t.integer "downloads", default: 0
-    t.boolean "pending"
+    t.boolean "pending", default: true
   end
 
   create_table "favorite_studies", force: :cascade do |t|

@@ -18,6 +18,7 @@ Rails.application.routes.draw do
   resources :studies
   resources :permissions, only: [:update, :destroy]
   resources :access_requests, only: [:new, :create]
-  get 'download/:id', to: 'datasets#download', as: :download_dataset
+  get 'datasets/download/:id', to: 'datasets#download', as: :download_dataset
+  post 'datasets/approve/:id', to: 'datasets#approve', as: :approve_dataset
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 end

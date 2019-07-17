@@ -1,5 +1,5 @@
 class DatasetsController < ApplicationController
-  before_action :set_dataset, only: [:show, :edit, :update, :destroy, :download]
+  before_action :set_dataset, only: [:show, :edit, :update, :destroy, :download, :approve]
   load_and_authorize_resource
   skip_authorize_resource only: [:new, :create]
 
@@ -71,6 +71,12 @@ class DatasetsController < ApplicationController
     @dataset.downloads += 1
     @dataset.save
     send_file File.join(Rails.root, 'public', @dataset.data.url)
+  end
+
+  def approve
+    @dataset.pending = false
+    @dataset.save
+    redirect_back(fallback_location: study_path(@dataset.study), notice: 'Dataset was approved.')
   end
 
   private

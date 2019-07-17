@@ -102,7 +102,7 @@ class StudiesController < ApplicationController
   def approve
     @study.pending = false
     @study.save
-    redirect_back(fallback_location: studies_path)
+    redirect_back(fallback_location: studies_path, notice: 'Study was approved.')
   end
 
   private

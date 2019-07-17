@@ -9,12 +9,10 @@
       <br/>
     <% end %>
   </div>
-  <% if can? :destroy, @study %>
-    <% if @study.pending %>
-      <div class="col-2">
-        <%= link_to 'Approve Study', approve_study_path(@study), method: :post, class: "btn btn-success" %>
-      </div>
-    <% end %>
+  <% if @study.pending && (can? :approve, @study) %>
+    <div class="col-2">
+      <%= link_to 'Approve Study', approve_study_path(@study), method: :post, class: "btn btn-success" %>
+    </div>
     <div class="col-2">
       <%= link_to 'Member Access', study_members_path(@study), class: 'btn btn-primary' %>
     </div>
@@ -56,14 +54,18 @@
     </div>
   <% end %>
 </div>
-<% if !@datasets.any? %>
-  <i>(No datasets available for this study.)</i>
-<% else %>
-  <ul class="list-group list-group-flush">
-    <% @datasets.each do |dataset| %>
+<% no_datasets_available = true %>
+<ul class="list-group list-group-flush">
+  <% @datasets.each do |dataset| %>
+    <% unless cannot? :read, dataset %>
+      <% no_datasets_available = false %>
       <li class="list-group-item">
         <div>
           <h4><%= link_to dataset.name, dataset %></h4>
+          <% if dataset.pending %>
+            <h6>(Pending approval)</h6>
+            <br/>
+          <% end %>
           <div>
             <strong>Data type:</strong>
             <% if dataset.data_type.nil? %>
@@ -79,6 +81,9 @@
         </div>
       </li>
     <% end %>
-  </ul>
+  <% end %>
+</ul>
+<% if no_datasets_available %>
+  <i>(No datasets available for this study.)</i>
 <% end %>
 <br/>
