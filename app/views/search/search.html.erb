@@ -1,0 +1,24 @@
+<div class="container">
+  <div class="row">
+    <div class="col-sm-3">
+    </div>
+    <div class="col-sm-9">
+      <%= form_tag filter_path, method: :get do %>
+        <div class="form-group row">
+          <div class="col-sm-9">
+            <%= text_field_tag :query, params[:query], { class: 'form-control', placeholder: 'Search terms...' } %>
+          </div>
+          <%= submit_tag 'Search', { class: 'btn btn-primary col-sm-2', method: :get } %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-3">
+      <h4>Filters</h4>
+    </div>
+    <div class="col-sm-9">
+      <%= render 'studies/list', studies: @studies %>
+    </div>
+  </div>
+</div>

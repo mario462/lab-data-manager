@@ -15,11 +15,15 @@ class User < ApplicationRecord
   def available_studies
     studies = Study.all
     unless self.admin
-      studies.reject do |s|
+      studies = studies.reject do |s|
         (s.visibility == Visibility::PRIVATE_ACCESS || s.pending) && !(s.in? self.studies)
       end
     end
     studies
+  end
+
+  def available_datasets
+    self.available_studies.map(&:datasets)
   end
 
   def owned_studies

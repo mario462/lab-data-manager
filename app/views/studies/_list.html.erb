@@ -1,0 +1,43 @@
+<ul class="list-group list-group-flush">
+  <% if @studies.empty? %>
+    <h6><i>(Nothing to show here yet)</i></h6>
+  <% end %>
+  <% @studies.each do |study| %>
+    <li class="list-group-item">
+      <div class="container" , style="margin: 0px">
+        <div class="row">
+          <h3 style="margin-right: 20px"><%= study.name %></h3>
+          <span>
+            <%= link_to(
+                    image_tag(study.in?(current_user.favorites) ? 'filled-star.png' : 'empty-star.png', style: "display: inline; width: 30px;"),
+                    toggle_favorite_study_path(study), method: :post) %>
+          </span>
+          <% if study.pending %>
+            <span style="padding-left: 50px">
+              <i>(Pending approval)</i>
+            </span>
+          <% end %>
+        </div>
+      </div>
+      <p><%= study.description %></p>
+      <p>
+        <% if study.url? %>
+          <%= link_to study.url, study.url, target: "_blank" %>
+        <% else %>
+          <i>No URL available for this study.</i>
+        <% end %>
+      </p>
+      <p>Visibility: <%= study.visibility_as_string %></p>
+      <% if cannot? :read, study %>
+        <%= link_to 'Apply for Access', access_requests_new_path(study_id: study.id), class: "btn btn-primary btn-sm" %>
+      <% else %>
+        <% if can? :read, study %>
+          <%= link_to 'Show', study, class: "btn btn-primary btn-sm" %>
+        <% end %>
+        <% if can? :edit, study %>
+          <%= link_to 'Edit', edit_study_path(study), class: "btn btn-primary btn-sm" %>
+        <% end %>
+      <% end %>
+    </li>
+  <% end %>
+</ul>
