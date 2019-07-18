@@ -41,4 +41,16 @@ class Dataset < ApplicationRecord
   def visibility
     self.study.pending ? Visibility::PRIVATE_ACCESS : self.study.visibility
   end
+
+  def has_data?
+    !(self.data.nil? || self.data.path.nil?)
+  end
+
+  def has_attachment?
+    !(self.attachment.nil? || self.attachment.path.nil?)
+  end
+
+  def self.create_from_study(study)
+    Dataset.new(name: study.name, description: study.description, study_id: study.id, year: 0, number_subjects: 0)
+  end
 end

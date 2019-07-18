@@ -4,9 +4,14 @@ class SearchController < ApplicationController
 
   def search
     @query = Query.new(query_params)
-    studies = FilterHelper::filter_for_search(current_user.available_studies, @query.text_query)
-    datasets = FilterHelper::filter_for_search(current_user.available_datasets, @query.text_query)
-    @studies = Set.new(studies).union(datasets.map(&:study))
+    @studies = current_user.available_studies
+    if @query.validate
+      datasets = current_user.available_datasets.to_a
+      current_user.available_studies.each do |s|
+        datasets << Dataset.create_from_study(s)
+      end
+      @studies = FilterHelper::filter_datasets(datasets, @query).uniq
+    end
     render 'search'
   end
 
@@ -17,8 +22,15 @@ class SearchController < ApplicationController
 
   def query_params
     if params[:query]
-      params.require(:query).permit(:text_query, :min_year, :max_year, :min_subjects, :max_subjects, :required_data,
-                                    :required_attachment, :selected_data_types => []).to_hash.symbolize_keys
+      filtered = params.require(:query).permit(:text_query, :min_year, :max_year, :min_subjects, :max_subjects, :required_data,
+                                               :required_attachment, :selected_data_types => []).to_hash.symbolize_keys
+      filtered[:min_year] = filtered[:min_year].to_i
+      filtered[:max_year] = filtered[:max_year].to_i
+      filtered[:min_subjects] = filtered[:min_subjects].to_i
+      filtered[:max_subjects] = filtered[:max_subjects].to_i
+      filtered[:required_data] = !filtered[:required_data].nil?
+      filtered[:required_attachment] = !filtered[:required_attachment].nil?
+      filtered
     else
       {}
     end

@@ -4,5 +4,5 @@
 
 <div style="margin-top: 10px;">
   <%= link_to 'Show', @study, class: "btn btn-primary btn-sm" %>
-  <%= link_to 'Back', studies_path, class: "btn btn-outline-secondary btn-sm" %>
+  <%= link_to 'Back', request.referer.present? ? request.referer : studies_path, class: "btn btn-outline-secondary btn-sm" %>
 </div>

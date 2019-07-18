@@ -3,5 +3,5 @@
 <%= render 'form', dataset: @dataset %>
 
 <div style="margin-top: 10px;">
-  <%= link_to 'Back', @dataset, class: "btn btn-outline-secondary btn-sm" %>
+  <%= link_to 'Back', request.referer.present? ? request.referer : @dataset, class: "btn btn-outline-secondary btn-sm" %>
 </div>

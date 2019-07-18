@@ -58,19 +58,19 @@
 
 <strong>Data:</strong><br/>
 <p>
-  <% if @dataset.data.nil? || @dataset.data.path.nil? %>
-    (<i>Not available.</i>)
-  <% else %>
+  <% if @dataset.has_data? %>
     <%= link_to @dataset.data.filename, download_dataset_path %>
+  <% else %>
+    (<i>Not available.</i>)
   <% end %>
 </p>
 
 <strong>Attachment:</strong><br/>
 <p>
-  <% if @dataset.attachment.nil? || @dataset.attachment.path.nil? %>
-    (<i>Not available.</i>)
-  <% else %>
+  <% if @dataset.has_attachment? %>
     <%= link_to @dataset.attachment.filename, @dataset.attachment.url %>
+  <% else %>
+    (<i>Not available.</i>)
   <% end %>
 </p>
 

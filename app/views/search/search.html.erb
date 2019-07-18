@@ -4,12 +4,21 @@
     </div>
     <div class="col-sm-9">
       <% form_name = 'search-form' %>
-      <%= form_for @query, url: filter_path, html: { id: form_name }, method: :get do |f| %>
+      <%= form_for(@query, url: filter_path, html: { id: form_name }, method: :get) do |f| %>
+        <% if @query.errors.any? %>
+          <% error_message = "<ul>" %>
+          <% @query.errors.full_messages.each do |msg| %>
+            <% error_message += "<li>#{msg}</li>" %>
+          <% end %>
+          <% error_message += "</ul>" %>
+          <%= f.error_notification message: error_message.html_safe %>
+        <% end %>
         <div class="form-group row">
-          <div class="col-sm-9">
+          <div class="col-sm-7">
             <%= f.text_field :text_query, { class: 'form-control', placeholder: 'Search terms...' } %>
           </div>
           <%= f.submit 'Search', { class: 'btn btn-primary col-sm-2', method: :get } %>
+          <%= link_to 'Clear Filters', search_path, class: 'btn btn-secondary col-sm-2 ml-1' %>
         </div>
       <% end %>
     </div>
@@ -50,12 +59,12 @@
         <%= submit_tag 'Go', { form: form_name, class: 'btn btn-primary col-sm-2', method: :get } %>
       </div>
       <div class="form-check">
-        <%= check_box_tag 'query[required_data]', @query.required_data, @query.required_data,
+        <%= check_box_tag 'query[required_data]', !@query.required_data, @query.required_data,
                           { class: 'form-check-input', form: form_name, onChange: "this.form.submit();" } %>
         <%= label_tag :required_data, 'Has Data', class: 'form-check-label' %>
       </div>
       <div class="form-check">
-        <%= check_box_tag 'query[required_attachment]', @query.required_attachment, @query.required_attachment,
+        <%= check_box_tag 'query[required_attachment]', !@query.required_attachment, @query.required_attachment,
                           { class: 'form-check-input', form: form_name, onChange: "this.form.submit();" } %>
         <%= label_tag :required_data, 'Has Attachment', class: 'form-check-label' %>
       </div>
