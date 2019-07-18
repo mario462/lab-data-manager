@@ -23,7 +23,13 @@ class User < ApplicationRecord
   end
 
   def available_datasets
-    self.available_studies.map(&:datasets)
+    datasets = Dataset.where("study_id IN (?)", self.available_studies.pluck(:id))
+    unless self.admin
+      datasets = datasets.reject do |d|
+        d.pending && !self.owner?(d.study)
+      end
+    end
+    datasets
   end
 
   def owned_studies

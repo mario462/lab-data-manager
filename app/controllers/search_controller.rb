@@ -5,9 +5,9 @@ class SearchController < ApplicationController
   def search
     query = filter_params[:query]
     studies = current_user.available_studies
-    sql_query = 'name LIKE ? or description LIKE ?'
-    studies = studies.where(sql_query, "%#{query}%", "%#{query}%")
-    datasets = Dataset.where("#{sql_query} AND study_id IN (?)", "%#{query}%", "%#{query}%", studies.pluck(:id))
+    studies = FilterHelper::filter_for_search(studies, query)
+    datasets = current_user.available_datasets
+    datasets = FilterHelper::filter_for_search(datasets, query)
     @studies = Set.new(studies).union(datasets.map(&:study))
     render 'search'
   end
