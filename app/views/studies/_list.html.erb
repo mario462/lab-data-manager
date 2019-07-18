@@ -1,6 +1,10 @@
 <ul class="list-group list-group-flush">
   <% if @studies.empty? %>
-    <h6><i>(Nothing to show here yet)</i></h6>
+    <% if searching %>
+      <h6><i>(No results found)</i></h6>
+    <% else %>
+      <h6><i>(Nothing to show here yet)</i></h6>
+    <% end %>
   <% end %>
   <% @studies.each do |study| %>
     <li class="list-group-item">
