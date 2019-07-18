@@ -3,16 +3,8 @@
     <div class="col-sm-3">
     </div>
     <div class="col-sm-9">
-      <%= form_for @query, url: filter_path, id: 'search-form', method: :get do |f| %>
-        <% @query.selected_data_types.each do |dt| %>
-          <%= f.hidden_field :selected_data_types, multiple: true, value: dt %>
-        <% end %>
-        <%= f.hidden_field :min_year %>
-        <%= f.hidden_field :max_year %>
-        <%= f.hidden_field :min_subjects %>
-        <%= f.hidden_field :max_subjects %>
-        <%= f.hidden_field :required_data %>
-        <%= f.hidden_field :required_attachment %>
+      <% form_name = 'search-form' %>
+      <%= form_for @query, url: filter_path, html: { id: form_name }, method: :get do |f| %>
         <div class="form-group row">
           <div class="col-sm-9">
             <%= f.text_field :text_query, { class: 'form-control', placeholder: 'Search terms...' } %>
@@ -26,65 +18,47 @@
     <div class="col-sm-3">
       <h4>Filters</h4>
       <h6 class="mt-3">Datatypes:</h6>
-      <%= form_for @query, url: filter_path, method: :get do |f| %>
-        <%= f.hidden_field :text_query %>
-        <%= f.hidden_field :min_year %>
-        <%= f.hidden_field :max_year %>
-        <%= f.hidden_field :min_subjects %>
-        <%= f.hidden_field :max_subjects %>
-        <%= f.hidden_field :required_data %>
-        <%= f.hidden_field :required_attachment %>
-        <% @query.data_types.each do |dt| %>
-          <div class="form-check">
-            <%= f.check_box :selected_data_types,
-                            { class: 'form-check-input', multiple: true, onChange: "this.form.submit();",
-                              checked: dt.id.to_s.in?(@query.selected_data_types) }, dt.id, false %>
-            <%= f.label :selected_data_types, dt.name, class: 'form-check-label' %>
-          </div>
-        <% end %>
+      <% @query.data_types.each do |dt| %>
+        <div class="form-check">
+          <%= check_box_tag 'query[selected_data_types][]',
+                            dt.id, dt.id.to_s.in?(@query.selected_data_types),
+                            { class: 'form-check-input', form: form_name, multiple: true,
+                              id: "query_selected_data_types_#{dt.id}", onChange: "this.form.submit();" } %>
+          <%= label_tag :selected_data_types, dt.name, class: 'form-check-label' %>
+        </div>
       <% end %>
       <h6 class="mt-3">Years:</h6>
-      <%= form_for @query, url: filter_path, method: :get do |f| %>
-        <% @query.selected_data_types.each do |dt| %>
-          <%= f.hidden_field :selected_data_types, multiple: true, value: dt %>
-        <% end %>
-        <%= f.hidden_field :text_query %>
-        <%= f.hidden_field :min_subjects %>
-        <%= f.hidden_field :max_subjects %>
-        <%= f.hidden_field :required_data %>
-        <%= f.hidden_field :required_attachment %>
-        <div class="form-group row">
-          <div class="col-sm-4">
-            <%= f.text_field :min_year, class: 'form-control' %>
-          </div>
-          <label class="col-xs-1 col-form-label">to:</label>
-          <div class="col-sm-4">
-            <%= f.text_field :max_year, class: 'form-control' %>
-          </div>
-          <%= f.submit 'Go', { class: 'btn btn-primary col-sm-2', method: :get } %>
+      <div class="form-group row">
+        <div class="col-sm-4">
+          <%= text_field_tag 'query[min_year]', @query.min_year, { form: form_name, class: 'form-control' } %>
         </div>
-      <% end %>
+        <label class="col-xs-1 col-form-label">to:</label>
+        <div class="col-sm-4">
+          <%= text_field_tag 'query[max_year]', @query.max_year, { form: form_name, class: 'form-control' } %>
+        </div>
+        <%= submit_tag 'Go', { form: form_name, class: 'btn btn-primary col-sm-2', method: :get } %>
+      </div>
       <h6 class="mt-3">Subjects:</h6>
-      <%= form_for @query, url: filter_path, method: :get do |f| %>
-        <% @query.selected_data_types.each do |dt| %>
-          <%= f.hidden_field :selected_data_types, multiple: true, value: dt %>
-        <% end %>
-        <%= f.hidden_field :text_query %>
-        <%= f.hidden_field :min_year %>
-        <%= f.hidden_field :max_year %>
-        <%= f.hidden_field :required_data %>
-        <%= f.hidden_field :required_attachment %>
-        <div class="form-group row">
-          <div class="col-sm-4">
-            <%= f.text_field :min_subjects, class: 'form-control' %>
-          </div>
-          <label class="col-xs-1 col-form-label">to:</label>
-          <div class="col-sm-4">
-            <%= f.text_field :max_subjects, class: 'form-control' %>
-          </div>
-          <%= f.submit 'Go', { class: 'btn btn-primary col-sm-2', method: :get } %>
+      <div class="form-group row">
+        <div class="col-sm-4">
+          <%= text_field_tag 'query[min_subjects]', @query.min_subjects, { form: form_name, class: 'form-control' } %>
         </div>
-      <% end %>
+        <label class="col-xs-1 col-form-label">to:</label>
+        <div class="col-sm-4">
+          <%= text_field_tag 'query[max_subjects]', @query.max_subjects, { form: form_name, class: 'form-control' } %>
+        </div>
+        <%= submit_tag 'Go', { form: form_name, class: 'btn btn-primary col-sm-2', method: :get } %>
+      </div>
+      <div class="form-check">
+        <%= check_box_tag 'query[required_data]', @query.required_data, @query.required_data,
+                          { class: 'form-check-input', form: form_name, onChange: "this.form.submit();" } %>
+        <%= label_tag :required_data, 'Has Data', class: 'form-check-label' %>
+      </div>
+      <div class="form-check">
+        <%= check_box_tag 'query[required_attachment]', @query.required_attachment, @query.required_attachment,
+                          { class: 'form-check-input', form: form_name, onChange: "this.form.submit();" } %>
+        <%= label_tag :required_data, 'Has Attachment', class: 'form-check-label' %>
+      </div>
     </div>
     <div class="col-sm-9">
       <%= render 'studies/list', studies: @studies, searching: true %>
