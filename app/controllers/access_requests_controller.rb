@@ -56,6 +56,9 @@ class AccessRequestsController < ApplicationController
         format.html { redirect_to studies_path, notice: 'Your request has been successfully created and study admins will be notified.' }
         format.json { render :show, status: :created, location: studies_path }
       else
+        if @request.errors[:uniqueness]
+          redirect_to studies_path, alert: @request.errors[:uniqueness].join('.') and return
+        end
         format.html { render :new }
         format.json { render json: @request.errors, status: :unprocessable_entity }
       end
