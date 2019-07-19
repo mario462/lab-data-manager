@@ -15,6 +15,8 @@ Rails.application.routes.draw do
   get 'access_requests/incoming', to: 'access_requests#incoming', as: :incoming_access_requests
   post 'access_requests/approve/:id', to: 'access_requests#approve', as: :approve_access_request
   post 'access_requests/deny/:id', to: 'access_requests#deny', as: :deny_access_request
+  post 'access_requests/hide/:id', to: 'access_requests#hide', as: :hide_access_request
+  delete 'access_requests/:id', to: 'access_requests#destroy', as: :delete_access_request
   resources :studies
   resources :permissions, only: [:update, :destroy]
   resources :access_requests, only: [:new, :create]

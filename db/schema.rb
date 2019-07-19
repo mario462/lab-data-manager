@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_07_17_084236) do
+ActiveRecord::Schema.define(version: 2019_07_19_163029) do
 
   create_table "access_requests", force: :cascade do |t|
     t.integer "study_id"
@@ -19,6 +19,7 @@ ActiveRecord::Schema.define(version: 2019_07_17_084236) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "status", default: 100
+    t.boolean "hidden", default: false
   end
 
   create_table "data_types", force: :cascade do |t|

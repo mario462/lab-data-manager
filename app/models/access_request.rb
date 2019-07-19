@@ -7,7 +7,7 @@ class AccessRequest < ApplicationRecord
   validates :motivation, presence: true, length: { minimum: 20, maximum: 100 }
   validates :user_id, presence: true
   validates :study_id, presence: true
-  validate :check_uniqueness
+  validate :check_uniqueness, on: :create
 
   def access_request_created_email
     UserMailer.new_access_request_email(self).deliver_later

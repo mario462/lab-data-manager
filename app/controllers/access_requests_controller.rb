@@ -1,9 +1,10 @@
 class AccessRequestsController < ApplicationController
   before_action :set_study, only: [:new]
-  before_action :set_request, only: [:approve, :deny]
+  before_action :set_request, only: [:approve, :deny, :destroy, :hide]
   skip_authorization_check
 
   def approve
+    authorize! :manage, @request.study
     @request.update(status: AccessRequestStatus::APPROVED)
     params = { user: @request.user, access: Access::VIEW }
     error_message = @request.study.add_member(params)
@@ -17,6 +18,7 @@ class AccessRequestsController < ApplicationController
   end
 
   def deny
+    authorize! :manage, @request.study
     params = { user: @request.user, study: @request.study }
     error_message = @request.study.remove_member(params)
     options = { fallback_location: studies_path }
@@ -65,10 +67,27 @@ class AccessRequestsController < ApplicationController
     end
   end
 
+  def hide
+    authorize! :manage, @request.study
+    @request.hidden = true
+    @request.save
+    redirect_back fallback_location: incoming_access_requests_url, notice: 'You wont be seeing this request anymore'
+  end
+
+  # DELETE /access_request/1
+  # DELETE /access_request/1.json
+  def destroy
+    raise CanCan::AccessDenied unless @request.user_id == current_user.id
+    @request.destroy
+    respond_to do |format|
+      format.html { redirect_back fallback_location: studies_url, notice: 'Access request was successfully destroyed.' }
+      format.json { head :no_content }
+    end
+  end
+
   private
   def set_request
     @request = AccessRequest.find(params[:id])
-    authorize! :manage, @request.study
   end
   # Use callbacks to share common setup or constraints between actions.
   def set_study

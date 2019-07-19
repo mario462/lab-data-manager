@@ -1,34 +1,41 @@
 <h2><%= @incoming ? 'Incoming Requests' : 'Your Requests' %></h2>
 <ul class="list-group list-group-flush">
-  <% if @requests.empty? %>
-    <h6><i>(Nothing to show here yet)</i></h6>
-  <% end %>
+  <% showed_any = false %>
   <% @requests.each do |request| %>
-    <li class="list-group-item">
-      <h3 style="margin-right: 20px">Study:
-        <% if cannot? :view, request.study %>
-          <%= request.study.name %>
+    <% unless request.hidden && (request.user_id != current_user.id) %>
+      <% showed_any = true %>
+      <li class="list-group-item">
+        <h3 style="margin-right: 20px">Study:
+          <% if cannot? :view, request.study %>
+            <%= request.study.name %>
+          <% else %>
+            <%= link_to request.study.name, study_path(request.study) %>
+          <% end %>
+        </h3>
+        <% if @incoming %>
+          <p><strong>User:</strong> <%= request.user.email %></p>
+        <% end %>
+        <strong>Motivation:</strong>
+        <p><%= request.motivation %></p>
+        <p><strong>Status: </strong><%= AccessRequestStatus::status_to_string(request.status) %></p>
+        <% if @incoming %>
+          <% if request.status == AccessRequestStatus::PENDING %>
+            <%= link_to 'Approve Request', approve_access_request_path(request), class: "btn btn-success btn-sm", method: :post %>
+            <%= link_to 'Deny Request', deny_access_request_path(request), class: "btn btn-danger btn-sm", method: :post %>
+          <% elsif request.status == AccessRequestStatus::APPROVED %>
+            <%= link_to 'Revoke Access', deny_access_request_path(request), class: "btn btn-danger btn-sm", method: :post %>
+          <% elsif request.status == AccessRequestStatus::DENIED %>
+            <%= link_to 'Grant Access', approve_access_request_path(request), class: "btn btn-success btn-sm", method: :post %>
+          <% end %>
+          <%= link_to 'Delete Request', hide_access_request_path(request), class: "btn btn-danger btn-sm", method: :post %>
         <% else %>
-          <%= link_to request.study.name, study_path(request.study) %>
+          <%= link_to 'Delete Request', delete_access_request_path(request), class: "btn btn-danger btn-sm", method: :delete %>
         <% end %>
-      </h3>
-      <% if @incoming %>
-        <p><strong>User:</strong> <%= request.user.email %></p>
-      <% end %>
-      <strong>Motivation:</strong>
-      <p><%= request.motivation %></p>
-      <p><strong>Status: </strong><%= AccessRequestStatus::status_to_string(request.status) %></p>
-      <% if @incoming %>
-        <% if request.status == AccessRequestStatus::PENDING %>
-          <%= link_to 'Approve Request', approve_access_request_path(request), class: "btn btn-success btn-sm", method: :post %>
-          <%= link_to 'Deny Request', deny_access_request_path(request), class: "btn btn-danger btn-sm", method: :post %>
-        <% elsif request.status == AccessRequestStatus::APPROVED %>
-          <%= link_to 'Revoke Access', deny_access_request_path(request), class: "btn btn-danger btn-sm", method: :post %>
-        <% elsif request.status == AccessRequestStatus::DENIED %>
-          <%= link_to 'Grant Access', approve_access_request_path(request), class: "btn btn-success btn-sm", method: :post %>
-        <% end %>
-      <% end %>
-    </li>
+      </li>
+    <% end %>
+  <% end %>
+  <% unless showed_any %>
+    <h6><i>(Nothing to show here yet)</i></h6>
   <% end %>
 </ul>
 <br/>
