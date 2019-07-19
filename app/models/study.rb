@@ -41,6 +41,10 @@ class Study < ApplicationRecord
     owner_permissions.map(&:user)
   end
 
+  def members
+    Permission.where(study: self).map(&:user)
+  end
+
   def owner_permissions
     Permission.where(study: self, access: Access::DESTROY)
   end

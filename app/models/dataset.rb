@@ -1,6 +1,8 @@
 class Dataset < ApplicationRecord
   belongs_to :study
   has_many :data_type
+  after_create :send_dataset_created_email
+  after_update :check_dataset_approved
   attr_accessor :data_type_id
   mount_uploader :attachment, FileUploader
   mount_uploader :data, FileUploader
@@ -52,5 +54,15 @@ class Dataset < ApplicationRecord
 
   def self.create_from_study(study)
     Dataset.new(name: study.name, description: study.description, study_id: study.id, year: 0, number_subjects: 0)
+  end
+
+  def send_dataset_created_email
+    UserMailer.dataset_created_email(self).deliver_later
+  end
+
+  def check_dataset_approved
+    if self.saved_change_to_attribute?(:pending) && !self.pending
+      UserMailer.dataset_approved_email(self).deliver_later
+    end
   end
 end

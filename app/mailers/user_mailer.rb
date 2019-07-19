@@ -32,15 +32,22 @@ class UserMailer < ApplicationMailer
   end
 
   def study_approved_email(study)
-    @site_name = SITE_NAME
     @study = study
     recipients = study.owners.pluck(:email)
     recipients << admin_emails
     mail(to: recipients.uniq, subject: "[#{SITE_NAME}] Study approved")
   end
 
-  def dataset_created_email
+  def dataset_created_email(dataset)
+    @dataset = dataset
+    mail(to: admin_emails, subject: "[#{SITE_NAME}] New dataset created")
+  end
 
+  def dataset_approved_email(dataset)
+    @dataset = dataset
+    recipients = dataset.study.members.pluck(:email)
+    recipients << admin_emails
+    mail(to: recipients.uniq, subject: "[#{SITE_NAME}] Dataset approved")
   end
 
   private
