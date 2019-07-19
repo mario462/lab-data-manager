@@ -59,14 +59,14 @@ class User < ApplicationRecord
   end
 
   def send_user_registered_email
-    UserMailer.with(user: self).welcome_user_email(self).deliver_later
-    UserMailer.with(user: self).user_needs_approval_email(self).deliver_later
+    UserMailer.welcome_user_email(self).deliver_later
+    UserMailer.user_needs_approval_email(self).deliver_later
   end
 
   def check_user_approved
     if self.saved_change_to_attribute?(:approved) && self.approved
-      UserMailer.with(user: self).user_approved_email(self).deliver_later
-      UserMailer.with(user: self).user_approved_admins_email(self).deliver_later
+      UserMailer.user_approved_email(self).deliver_later
+      UserMailer.user_approved_admins_email(self).deliver_later
     end
   end
 end

@@ -25,6 +25,16 @@ class UserMailer < ApplicationMailer
     mail(to: admin_emails, subject: "[#{SITE_NAME}] User account has been approved")
   end
 
+  def study_created_email(user, study)
+    @user = user
+    @study = study
+    mail(to: admin_emails, subject: "[#{SITE_NAME}] New study created")
+  end
+
+  def dataset_created_email
+
+  end
+
   private
 
   def admin_emails

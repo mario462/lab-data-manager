@@ -64,4 +64,9 @@ class Study < ApplicationRecord
     end
     error_message
   end
+
+  def set_owner(user)
+    Permission.create(study: self, user: user, access: Access::DESTROY)
+    user.favorites << self
+  end
 end

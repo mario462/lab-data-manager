@@ -65,8 +65,9 @@ class StudiesController < ApplicationController
 
     respond_to do |format|
       if @study.save
-        set_study_owner(@study)
-        format.html { redirect_to @study, notice: 'Study was successfully created.' }
+        @study.set_owner(current_user)
+        format.html { redirect_to @study,
+                                  notice: 'Study was successfully created. Your new study must be reviewed by an administrator before making it public.' }
         format.json { render :show, status: :created, location: @study }
       else
         format.html { render :new }
@@ -106,10 +107,6 @@ class StudiesController < ApplicationController
   end
 
   private
-    def set_study_owner(study)
-      Permission.create(study: study, user: current_user, access: Access::DESTROY)
-      current_user.favorites << study
-    end
 
     # Use callbacks to share common setup or constraints between actions.
     def set_study

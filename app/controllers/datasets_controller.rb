@@ -34,7 +34,8 @@ class DatasetsController < ApplicationController
 
     respond_to do |format|
       if @dataset.save
-        format.html { redirect_to @dataset, notice: 'Dataset was successfully created.' }
+        format.html { redirect_to @dataset,
+                                  notice: 'Dataset was successfully created. Your new dataset must be reviewed by an administrator before making it public.' }
         format.json { render :show, status: :created, location: @dataset }
       else
         format.html { render :new }
