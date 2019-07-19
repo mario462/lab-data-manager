@@ -5,7 +5,7 @@ Rails.application.routes.draw do
   resources :datasets, except: :index
   root to: 'home#index'
   get 'home/index'
-  devise_for :users
+  devise_for :users, controllers: { registrations: 'registrations' }
   post 'studies/:id/add_member', to: 'studies#add_member', as: :add_member
   get 'studies/:id/members', to: 'studies#members', as: :study_members
   post 'studies/toggle_favorite/:id', to: 'studies#toggle_favorite', as: :toggle_favorite_study

@@ -9,7 +9,8 @@ gem 'carrierwave'
 gem 'cancancan'
 gem 'rails_admin'
 gem 'rubocop'
-gem "font-awesome-rails"
+gem 'font-awesome-rails'
+gem 'figaro'
 
 ruby '2.6.3'
 

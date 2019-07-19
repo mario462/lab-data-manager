@@ -1,6 +1,7 @@
 class User < ApplicationRecord
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
+  after_create :send_user_registered_email
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
   has_many :permissions, dependent: :delete_all
@@ -54,5 +55,10 @@ class User < ApplicationRecord
 
   def inactive_message
     approved? ? super : :not_approved
+  end
+
+  def send_user_registered_email
+    UserMailer.with(user: self).welcome_user_email(self).deliver_later
+    UserMailer.with(user: self).user_needs_approval_email(self).deliver_later
   end
 end
