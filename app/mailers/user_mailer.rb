@@ -50,6 +50,17 @@ class UserMailer < ApplicationMailer
     mail(to: recipients.uniq, subject: "[#{SITE_NAME}] Dataset approved")
   end
 
+  def new_access_request_email(request)
+    @request = request
+    mail(to: request.study.owners.pluck(:email), subject: "[#{SITE_NAME}] New access request")
+  end
+
+  def access_request_changed_email(request)
+    @request = request
+    @granted = request.status == AccessRequestStatus::APPROVED
+    mail(to: request.user.email, subject: "[#{SITE_NAME}] Access request #{@granted ? 'approved' : 'denied'}")
+  end
+
   private
 
   def admin_emails

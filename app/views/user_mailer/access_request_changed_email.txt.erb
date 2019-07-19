@@ -1,0 +1,9 @@
+Your access request to study "<%= @request.study.name %>" has been <%= @granted ? 'approved!' : 'denied' %>
+=================================================================================
+
+<% if @granted %>
+Here is the link to the study: <%= study_url(@request.study) %>
+<% else %>
+We are very sorry to hear that.
+<% end %>
+Have a nice day!

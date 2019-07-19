@@ -1,0 +1,7 @@
+User <%= @request.user.email %> has requested access to study "<%= @request.study.name %>"!
+
+Please review the request and decide wether to grant or deny access.
+
+You can review incoming requests here: <%= incoming_access_requests_url %>
+
+Have a nice day!

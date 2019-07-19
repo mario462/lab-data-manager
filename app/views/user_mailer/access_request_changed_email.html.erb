@@ -1,0 +1,12 @@
+<h1>Your access request to study "<%= @request.study.name %>" has been <%= @granted ? 'approved!' : 'denied' %></h1>
+
+<% if @granted %>
+  <p>
+    Here is the link to the study: <%= study_url(@request.study) %><br/>
+  </p>
+<% else %>
+  <p>
+    We are very sorry to hear that.<br/>
+  </p>
+<% end %>
+<p>Have a nice day!</p>
