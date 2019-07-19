@@ -1,5 +1,6 @@
 class Study < ApplicationRecord
   include Visibility
+  after_update :check_study_approved
   has_many :datasets, dependent: :delete_all
   has_many :permissions, dependent: :delete_all
   has_many :users, through: :permissions
@@ -37,6 +38,10 @@ class Study < ApplicationRecord
   end
 
   def owners
+    owner_permissions.map(&:user)
+  end
+
+  def owner_permissions
     Permission.where(study: self, access: Access::DESTROY)
   end
 
@@ -45,7 +50,7 @@ class Study < ApplicationRecord
   end
 
   def single_owner?(user)
-    owners.count <= 1 && owned_by?(user)
+    owner_permissions.count <= 1 && owned_by?(user)
   end
 
   def remove_member(params)
@@ -68,5 +73,11 @@ class Study < ApplicationRecord
   def set_owner(user)
     Permission.create(study: self, user: user, access: Access::DESTROY)
     user.favorites << self
+  end
+
+  def check_study_approved
+    if self.saved_change_to_attribute?(:pending) && !self.pending
+      UserMailer.study_approved_email(self).deliver_later
+    end
   end
 end

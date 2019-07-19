@@ -5,7 +5,7 @@ class UserMailer < ApplicationMailer
   def welcome_user_email(user)
     @user = user
     @site_name = SITE_NAME
-    mail(to: @user.email, subject: "Welcome to #{@site_name}")
+    mail(to: @user.email, subject: "Welcome to #{SITE_NAME}")
   end
 
   def user_needs_approval_email(user)
@@ -17,7 +17,7 @@ class UserMailer < ApplicationMailer
   def user_approved_email(user)
     @site_name = SITE_NAME
     @url = new_user_session_url
-    mail(to: user.email, subject: "[#{@site_name}] Your account has been approved!")
+    mail(to: user.email, subject: "[#{SITE_NAME}] Your account has been approved!")
   end
 
   def user_approved_admins_email(user)
@@ -29,6 +29,14 @@ class UserMailer < ApplicationMailer
     @user = user
     @study = study
     mail(to: admin_emails, subject: "[#{SITE_NAME}] New study created")
+  end
+
+  def study_approved_email(study)
+    @site_name = SITE_NAME
+    @study = study
+    recipients = study.owners.pluck(:email)
+    recipients << admin_emails
+    mail(to: recipients.uniq, subject: "[#{SITE_NAME}] Study approved")
   end
 
   def dataset_created_email
