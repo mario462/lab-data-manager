@@ -6,12 +6,12 @@
       <% form_name = 'search-form' %>
       <%= form_for(@query, url: filter_path, html: { id: form_name }, method: :get) do |f| %>
         <% if @query.errors.any? %>
-          <% error_message = "<ul>" %>
+          <% error_message = "<ul class=\"alert alert-danger\">" %>
           <% @query.errors.full_messages.each do |msg| %>
             <% error_message += "<li>#{msg}</li>" %>
           <% end %>
           <% error_message += "</ul>" %>
-          <%= f.error_notification message: error_message.html_safe %>
+          <%= error_message.html_safe %>
         <% end %>
         <div class="form-group row">
           <div class="col-sm-7">

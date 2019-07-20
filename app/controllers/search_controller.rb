@@ -7,10 +7,10 @@ class SearchController < ApplicationController
     @studies = current_user.available_studies
     if @query.validate
       datasets = current_user.available_datasets.to_a
-      current_user.available_studies.each do |s|
+      @studies.each do |s|
         datasets << Dataset.create_from_study(s)
       end
-      @studies = FilterHelper::filter_datasets(datasets, @query).uniq
+      @studies = FilterHelper::filter_datasets(datasets, @query).uniq unless (datasets.nil? || datasets.empty?)
     end
     render 'search'
   end

@@ -30,7 +30,8 @@ class Query
   private
 
   def max_number_subjects
-    Dataset.order('number_subjects DESC').first.number_subjects
+    dataset = Dataset.order('number_subjects DESC').first
+    dataset.nil? ? 0 : dataset.number_subjects
   end
 
   def correct_boundaries
