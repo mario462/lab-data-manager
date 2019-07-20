@@ -1,5 +1,5 @@
 class UserMailer < ApplicationMailer
-  default from: 'notifications@example.com'
+  default from: ENV['prod_email_user']
   SITE_NAME = ENV['site_name']
 
   def welcome_user_email(user)

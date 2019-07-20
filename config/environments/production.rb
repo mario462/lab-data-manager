@@ -70,10 +70,10 @@ Rails.application.configure do
   config.action_mailer.smtp_settings = {
       address: 'smtp.office365.com',
       port: 587,
-      domain: 'neuroinformatics-collaboratory.org',
+      domain: '192.168.100.11',
       user_name: ENV['prod_email_user'],
       password: ENV['prod_email_password'],
-      authentication: 'plain',
+      authentication: 'login',
       enable_starttls_auto: true
   }
 
