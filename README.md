@@ -1,24 +1,10 @@
-# README
+Lab Data Manager
+================
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+The idea behind Lab Data Manager is to have a single place where to store and organize medical data.
 
-Things you may want to cover:
+Data is represented by datasets, which in turn belong to study. A study can be Private, Apply for access or Open use. Users can have Read, Edit or Destroy permissions for each study they are a member of.
 
-* Ruby version
+The application have admin accounts. These admins are responsible for approving user accounts, as well as newly created datasets and studies.
 
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+Written in Ruby on Rails.
